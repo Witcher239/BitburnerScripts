@@ -1,10 +1,10 @@
 /** @param {NS} ns */
 
-import {Manager} from "blob:file:///1b501ff8-9934-4796-82f6-ad89d4aa647a"
+import {Manager} from "/scripts/managers/Manager.js"
 
-import {WeakenController} from "blob:file:///3f7fd2ed-cb40-40f6-b7a2-006f6fa9bacf"
-import {GrowController} from "blob:file:///f92ff8e0-d2e6-43fe-acaa-3c9f4859a6db"
-import {HackController} from "blob:file:///c420a3b2-e2b4-4d24-9d37-0bef0de644c9"
+import {WeakenController} from "/scripts/controllers/WeakenController.js"
+import {GrowController} from "/scripts/controllers/GrowController.js"
+import {HackController} from "/scripts/controllers/HackController.js"
 
 export async function main(ns)
 {
