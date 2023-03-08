@@ -1,9 +1,9 @@
 /** @param {NS} ns */
 
-import {Manager} from "blob:file:///d2d15847-5e52-40bc-a806-84cfd04f40f2"
+import {Manager} from "/scripts/managers/Manager.js"
 
-import {getAllServerNames} from "blob:file:///5aba5048-dc18-4fd3-908e-597d79dd49c4"
-import {executeOnRemoteServer} from "blob:file:///a6de1244-facb-4f26-bf71-d9bcfe4fc288"
+import {getAllServerNames} from "/scripts/util/util.js"
+import {executeOnRemoteServer} from "/scripts/util/util.js"
 
 export async function main(ns)
 {
