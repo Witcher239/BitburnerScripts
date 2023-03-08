@@ -1,7 +1,7 @@
 /** @param {NS} ns */
 
-import {executeOnRemoteServer} from "blob:file:///523e5cdc-d86c-4570-bc17-69bf155f67b8"
-import {getAllServerNames} from "blob:file:///e6bbc8cf-5a20-4aff-b487-68e899f6749c"
+import {executeOnRemoteServer} from "/scripts/util/util.js"
+import {getAllServerNames} from "/scripts/util/util.js"
 
 export class HackingOperationController
 {
