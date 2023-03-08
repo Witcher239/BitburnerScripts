@@ -1,18 +1,18 @@
 /**@param {NS} ns**/
 
-import {Manager} from "blob:file:///18e2e5f2-e602-44f8-bd8a-56a1f4bdc174"
+import {Manager} from "/scripts/managers/Manager.js"
 
-import {StockPriceContractSolver} from "blob:file:///13e76d67-59be-4b72-80ef-bd97ee4776ad"
-import {SanitizeParenthesesContractSolver} from "blob:file:///aeaf2aa0-3b81-4083-bb36-c04e06fc3bac"
-import {PrimeFactorContractSolver} from "blob:file:///bc4b8fd2-cc55-4fca-8b50-a28b3522fa6b"
-import {MaxSumContractSolver} from "blob:file:///ab82927d-96a7-4937-92fe-cca21a20eefc"
-import {RLECompressionContractSolver} from "blob:file:///08582d04-0887-42b4-a361-dbd4accaad6e"
-import {LZDecompressionContractSolver} from "blob:file:///e907fa64-46d1-4770-86b3-788a05fc824f"
-import {LZCompressionContractSolver} from "blob:file:///056dcd61-8172-485c-b493-a26aac85b3d4"
-import {IPAddressesContractSolver} from "blob:file:///5806fe9f-c10d-4d2a-bfc5-38dbd49ec7c0"
-import {ArrayJumpingContractSolver} from "blob:file:///6df08cf6-5d14-4d3f-80e9-47ace8db0617"
+import {StockPriceContractSolver} from "/scripts/contractSolvers/StockPriceContractSolver.js"
+import {SanitizeParenthesesContractSolver} from "/scripts/contractSolvers/SanitizeParenthesesContractSolver.js"
+import {PrimeFactorContractSolver} from "/scripts/contractSolvers/PrimeFactorContractSolver.js"
+import {MaxSumContractSolver} from "/scripts/contractSolvers/MaxSumContractSolver.js"
+import {RLECompressionContractSolver} from "/scripts/contractSolvers/RLECompressionContractSolver.js"
+import {LZDecompressionContractSolver} from "/scripts/contractSolvers/LZDecompressionContractSolver.js"
+import {LZCompressionContractSolver} from "/scripts/contractSolvers/LZCompressionContractSolver.js"
+import {IPAddressesContractSolver} from "/scripts/contractSolvers/IPAddressesContractSolver.js"
+import {ArrayJumpingContractSolver} from "/scripts/contractSolvers/ArrayJumpingContractSolver.js"
 
-import {getAllServerNames} from "blob:file:///8019f9bd-28c3-4a85-bb75-72131bd7b3d1"
+import {getAllServerNames} from "/scripts/util/util.js"
 
 export async function main(ns)
 {
