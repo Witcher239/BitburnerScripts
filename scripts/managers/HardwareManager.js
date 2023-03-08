@@ -1,8 +1,8 @@
 /**@param {NS} ns**/
 
-import {Manager} from "blob:file:///8663cb29-e98b-4f4e-8f61-7e5ad2eb208b"
+import {Manager} from "/scripts/managers/Manager.js"
 
-import {getPurchasedServerNames} from "blob:file:///7d4eea69-2dea-45fc-9784-23001312ebad"
+import {getPurchasedServerNames} from "/scripts/util/util.js"
 
 export async function main(ns)
 {
