@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 
-import {HackingOperationController} from "blob:file:///63b3bf40-4f74-4ab7-8fbc-19a091df58e0"
+import {HackingOperationController} from "/scripts/controllers/HackingOperationController.js"
 
 export class WeakenController extends HackingOperationController
 {
