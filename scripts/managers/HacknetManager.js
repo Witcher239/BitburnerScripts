@@ -1,8 +1,8 @@
 /**@param {NS} ns**/
 
-import {Manager} from "blob:file:///3ce62d30-3508-464d-93f0-f2c9d8d36e50"
+import {Manager} from "/scripts/managers/Manager.js"
 
-import {UpgradeHacknetNodeService} from "blob:file:///791d2233-ce8a-4c60-889e-2f1f8409712c"
+import {UpgradeHacknetNodeService} from "/scripts/services/UpgradeHacknetNodeService.js"
 
 export async function main(ns)
 {
