@@ -21,6 +21,8 @@ export class HacknetManager extends Manager
 
 	moneyForHacknetUpgrades = 0;
 
+	bitnodeMultiplier = 0.05;
+
 	constructor(ns)
 	{
 		super(ns);
@@ -41,7 +43,7 @@ export class HacknetManager extends Manager
 
 	init()
 	{
-		this.newHacknetNodeTargetRevenueTimeProduction = 1.5 * this.ns.getHacknetMultipliers().production * this.targetRevenueTime;
+		this.newHacknetNodeTargetRevenueTimeProduction = 1.5 * this.ns.getHacknetMultipliers().production * bitnodeMultiplier * this.targetRevenueTime;
 	}
 
 	async manage()
@@ -55,7 +57,9 @@ export class HacknetManager extends Manager
 
 	updateInfo()
 	{
-		this.moneyForHacknetUpgrades = this.ns.getServerMoneyAvailable(this.ns.getHostname()) * this.fractionOfMoneyForHacknetUpgrades;
+		this.waitTime = 60000;
+
+		this.moneyForHacknetUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForHacknetUpgrades;
 	}
 
 	upgradeExistingHacknetNodes()
@@ -85,6 +89,8 @@ export class HacknetManager extends Manager
 					+ '" has been purchased');
 
 				this.upgradeHacknetNode(hacknetNodeIndex);
+
+				this.waitTime = 1000;
 			}
 
 			purchaseNodeCost = this.ns.hacknet.getPurchaseNodeCost();
@@ -101,6 +107,11 @@ export class HacknetManager extends Manager
 
 		upgradeHacknetNodeService.startOperation();
 
-		this.moneyForHacknetUpgrades = upgradeHacknetNodeService.remainingMoneyForUpgrades;
+		if (this.moneyForHacknetUpgrades != upgradeHacknetNodeService.remainingMoneyForUpgrades)
+		{
+			this.moneyForHacknetUpgrades = upgradeHacknetNodeService.remainingMoneyForUpgrades;
+
+			this.waitTime = 1000;
+		}
 	}
 }
