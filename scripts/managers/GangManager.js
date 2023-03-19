@@ -16,10 +16,13 @@ export class GangManager extends Manager
 
 	newMembersNames = ['Tommy', 'Paul', 'Sam', 'Mike', 'Frank', 'Trevor', 'Zack', 'Dave', 'Andy', 'Luke', 'Goro', 'Kiryu'];
 
-	fractionOfMoneyForEquipmentPurchase = 0.001;
 	fractionOfMoneyForAugmentationsPurchase = 0.01;
+	fractionOfMoneyForEquipmentPurchase = 0.001;
 
 	expectedTotalMultipliersGain = 10;
+
+	moneyForAugmentationsPurchase = 0;
+	moneyForEquipmentPurchase = 0;
 
 	constructor(ns)
 	{
@@ -64,9 +67,19 @@ export class GangManager extends Manager
 
 	async manage()
 	{
+		this.updateInfo();
+
 		this.recruitMembers();
 
 		this.manageMembers();
+	}
+
+	updateInfo()
+	{
+		this.waitTime = 60000;
+
+		this.moneyForAugmentationsPurchase = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForAugmentationsPurchase;
+		this.moneyForEquipmentPurchase = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForEquipmentPurchase;
 	}
 
 	recruitMembers()
@@ -136,11 +149,13 @@ export class GangManager extends Manager
 				var augmentationName = this.augmentationNames[i];
 
 				if (gangMemberInfo.augmentations.indexOf(augmentationName) == -1
-					&& this.ns.gang.getEquipmentCost(augmentationName) < (this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForAugmentationsPurchase))
+					&& this.ns.gang.getEquipmentCost(augmentationName) < this.moneyForAugmentationsPurchase)
 				{
 					this.ns.gang.purchaseEquipment(
 						memberName,
 						augmentationName);
+
+					this.waitTime = 1000;
 				}
 			}
 		}
@@ -180,11 +195,13 @@ export class GangManager extends Manager
 				var equipmentName = this.equipmentNames[i];
 
 				if (gangMemberInfo.upgrades.indexOf(equipmentName) == -1
-					&& this.ns.gang.getEquipmentCost(equipmentName) < (this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForEquipmentPurchase))
+					&& this.ns.gang.getEquipmentCost(equipmentName) < this.moneyForEquipmentPurchase)
 				{
 					this.ns.gang.purchaseEquipment(
 						memberName,
 						equipmentName);
+
+					this.waitTime = 1000;
 				}
 			}
 		}
