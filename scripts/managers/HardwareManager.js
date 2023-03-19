@@ -62,7 +62,9 @@ export class HardwareManager extends Manager
 
 	updateInfo()
 	{
-		this.moneyForHardwareUpgrades = this.ns.getServerMoneyAvailable(this.ns.getHostname()) * this.fractionOfMoneyForHardwareUpgrades;
+		this.waitTime = 60000;
+
+		this.moneyForHardwareUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForHardwareUpgrades;
 
 		var serverNamesUpdated = false;
 
@@ -125,6 +127,8 @@ export class HardwareManager extends Manager
 			this.upgradableServerNames.push(newServerName);
 
 			this.moneyForHardwareUpgrades -= this.newServerCost;
+
+			this.waitTime = 1000;
 		}
 	}
 
@@ -194,6 +198,8 @@ export class HardwareManager extends Manager
 					+ this.ns.formatRam(newRAM)
 					+ ' RAM for '
 					+ this.ns.formatNumber(upgradeCost));
+
+				this.waitTime = 1000;
 			}
 			else
 			{
