@@ -247,6 +247,6 @@ export class UpgradeHacknetNodeService
 		var ramMultiplier = Math.pow(1.035, (ram - 1));
 		var coresMultiplier = 1 + 0.167 * (cores - 1);
 
-		return 1.5 * level * ramMultiplier * coresMultiplier * this.hacknetMultipliers.production * bitnodeMultiplier * this.targetRevenueTime;
+		return 1.5 * level * ramMultiplier * coresMultiplier * this.hacknetMultipliers.production * this.bitnodeMultiplier * this.targetRevenueTime;
 	}
 }
