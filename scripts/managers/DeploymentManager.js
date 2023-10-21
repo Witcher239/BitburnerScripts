@@ -35,16 +35,50 @@ export class DeploymentManager extends Manager
 
 	init()
 	{
+		this.resetFlags();
+
 		this.serverNames = getAllServerNames(this.ns);
+	}
+
+	resetFlags()
+	{
+		this.ns.write(
+			'flags/AllAccessGranted.txt',
+			'0',
+			'w');
+		
+		this.ns.write(
+			'flags/AllSoftwareInstalled.txt',
+			'0',
+			'w');
 	}
 
 	async manage()
 	{
-		await this.deployAccessManager();
+		if (this.canDeployAccessManager())
+		{
+			await this.deployAccessManager();
+		}
 
-		await this.deployHardwareManager();
+		if (this.canDeployHardwareManager())
+		{
+			await this.deployHardwareManager();
+		}
 
-		await this.deployHacknetManager();
+		if (this.canDeploySoftwareManager())
+		{
+			await this.deploySoftwareManager();
+		}
+
+		if (this.canDeployHacknetManager())
+		{
+			await this.deployHacknetManager();
+		}
+
+		if (this.canDeployFactionManager())
+		{
+			await this.deployFactionManager();
+		}
 
 		if (this.canDeployContractManager())
 		{
@@ -67,11 +101,16 @@ export class DeploymentManager extends Manager
 		}
 	}
 
+	canDeployAccessManager()
+	{
+		return this.ns.read('flags/AllAccessGranted.txt') == '0';
+	}
+
 	async deployAccessManager()
 	{
 		if (!this.ns.isRunning(
-				'/scripts/managers/AccessManager.js',
-				this.ns.getHostname()))
+					'/scripts/managers/AccessManager.js',
+					this.ns.getHostname()))
 		{
 			await executeOnRemoteServer(
 				this.ns,
@@ -79,13 +118,18 @@ export class DeploymentManager extends Manager
 				this.ns.getHostname(),
 				1);
 		}
+	}
+
+	canDeployHardwareManager()
+	{
+		return true;
 	}
 
 	async deployHardwareManager()
 	{
 		if (!this.ns.isRunning(
-				'/scripts/managers/HardwareManager.js',
-				this.ns.getHostname()))
+					'/scripts/managers/HardwareManager.js',
+					this.ns.getHostname()))
 		{
 			await executeOnRemoteServer(
 				this.ns,
@@ -95,15 +139,58 @@ export class DeploymentManager extends Manager
 		}
 	}
 
+	canDeploySoftwareManager()
+	{
+		return this.ns.hasTorRouter();
+	}
+
+	async deploySoftwareManager()
+	{
+		if (!this.ns.isRunning(
+					'/scripts/managers/SoftwareManager.js',
+					this.ns.getHostname()))
+		{
+			await executeOnRemoteServer(
+				this.ns,
+				'/scripts/managers/SoftwareManager.js',
+				this.ns.getHostname(),
+				1);
+		}
+	}
+
+	canDeployHacknetManager()
+	{
+		return true;
+	}
+
 	async deployHacknetManager()
 	{
 		if (!this.ns.isRunning(
-				'/scripts/managers/HacknetManager.js',
-				this.ns.getHostname()))
+					'/scripts/managers/HacknetManager.js',
+					this.ns.getHostname()))
 		{
 			await executeOnRemoteServer(
 				this.ns,
 				'/scripts/managers/HacknetManager.js',
+				this.ns.getHostname(),
+				1);
+		}
+	}
+
+	canDeployFactionManager()
+	{
+		return this.ns.getServerMaxRam(this.ns.getHostname()) >= 128;
+	}
+
+	async deployFactionManager()
+	{
+		if (!this.ns.isRunning(
+					'/scripts/managers/FactionManager.js',
+					this.ns.getHostname()))
+		{
+			await executeOnRemoteServer(
+				this.ns,
+				'/scripts/managers/FactionManager.js',
 				this.ns.getHostname(),
 				1);
 		}
@@ -117,8 +204,8 @@ export class DeploymentManager extends Manager
 	async deployContractManager()
 	{
 		if (!this.ns.isRunning(
-				'/scripts/managers/ContractManager.js',
-				this.ns.getHostname()))
+					'/scripts/managers/ContractManager.js',
+					this.ns.getHostname()))
 		{
 			await executeOnRemoteServer(
 				this.ns,
@@ -131,14 +218,14 @@ export class DeploymentManager extends Manager
 	canDeployGangManager()
 	{
 		return this.ns.gang.inGang()
-			&& this.ns.getServerMaxRam(this.ns.getHostname()) >= 256;
+				&& this.ns.getServerMaxRam(this.ns.getHostname()) >= 256;
 	}
 
 	async deployGangManager()
 	{
 		if (!this.ns.isRunning(
-				'/scripts/managers/GangManager.js',
-				this.ns.getHostname()))
+					'/scripts/managers/GangManager.js',
+					this.ns.getHostname()))
 		{
 			await executeOnRemoteServer(
 				this.ns,
@@ -151,15 +238,15 @@ export class DeploymentManager extends Manager
 	canDeployHackingManager(targetServerName)
 	{
 		return this.ns.hasRootAccess(targetServerName)
-			&& this.ns.getServerMaxMoney(targetServerName) > 0;
+				&& this.ns.getServerMaxMoney(targetServerName) > 0;
 	}
 
 	async deployHackingManager(targetServerName)
 	{
 		if (!this.ns.isRunning(
-				'/scripts/managers/HackingManager.js',
-				this.ns.getHostname(),
-				targetServerName))
+					'/scripts/managers/HackingManager.js',
+					this.ns.getHostname(),
+					targetServerName))
 		{
 			await executeOnRemoteServer(
 				this.ns,
