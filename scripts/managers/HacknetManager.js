@@ -13,7 +13,7 @@ export async function main(ns)
 
 export class HacknetManager extends Manager
 {
-	fractionOfMoneyForHacknetUpgrades = 0.001;
+	fractionOfMoneyForHacknetUpgrades = 0.01;
 
 	targetRevenueTime = 10800;
 
@@ -43,7 +43,7 @@ export class HacknetManager extends Manager
 
 	init()
 	{
-		this.newHacknetNodeTargetRevenueTimeProduction = 1.5 * this.ns.getHacknetMultipliers().production * bitnodeMultiplier * this.targetRevenueTime;
+		this.newHacknetNodeTargetRevenueTimeProduction = 1.5 * this.ns.getHacknetMultipliers().production * this.bitnodeMultiplier * this.targetRevenueTime;
 	}
 
 	async manage()
