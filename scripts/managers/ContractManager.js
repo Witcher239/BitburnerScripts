@@ -7,8 +7,8 @@ import {SanitizeParenthesesContractSolver} from "/scripts/contractSolvers/Saniti
 import {PrimeFactorContractSolver} from "/scripts/contractSolvers/PrimeFactorContractSolver.js"
 import {MaxSumContractSolver} from "/scripts/contractSolvers/MaxSumContractSolver.js"
 import {RLECompressionContractSolver} from "/scripts/contractSolvers/RLECompressionContractSolver.js"
-import {LZDecompressionContractSolver} from "/scripts/contractSolvers/LZDecompressionContractSolver.js"
-import {LZCompressionContractSolver} from "/scripts/contractSolvers/LZCompressionContractSolver.js"
+import {LZDecompressionContractSolver} from "scripts/contractSolvers/LZDecompressionContractSolver.js"
+import {LZCompressionContractSolver} from "scripts/contractSolvers/LZCompressionContractSolver.js"
 import {IPAddressesContractSolver} from "/scripts/contractSolvers/IPAddressesContractSolver.js"
 import {ArrayJumpingContractSolver} from "/scripts/contractSolvers/ArrayJumpingContractSolver.js"
 
