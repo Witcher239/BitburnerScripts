@@ -40,7 +40,11 @@ export class WeakenController extends HackingOperationController
 		var currentSecurityLevel = this.ns.getServerSecurityLevel(this.targetServerName);
 		var minSecurityLevel = this.ns.getServerMinSecurityLevel(this.targetServerName);
 
-		return Math.ceil((currentSecurityLevel - minSecurityLevel) / this.ns.weakenAnalyze(numOfCores));
+		var securityDecreasePerThread = this.ns.weakenAnalyze(
+			1,
+			numOfCores);
+
+		return Math.ceil((currentSecurityLevel - minSecurityLevel) / securityDecreasePerThread);
 	}
 
 	getSleepTime()
