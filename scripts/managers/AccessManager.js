@@ -2,6 +2,8 @@
 
 import {Manager} from "/scripts/managers/Manager.js"
 
+import {BackdoorInstallerService} from "/scripts/services/BackdoorInstallerService.js"
+
 import {getAllServerNames} from "/scripts/util/util.js"
 
 export async function main(ns)
@@ -13,7 +15,8 @@ export async function main(ns)
 
 export class AccessManager extends Manager
 {
-	targetServerNames = [];
+	rootAccessTargetServerNames = [];
+	backdoorTargetServerNames = [];
 
 	torRouter = false;
 
@@ -24,6 +27,8 @@ export class AccessManager extends Manager
 	hasRelaySMTP = false;
 	hasHTTPWorm = false;
 	hasSQLInject = false;
+
+	backdoorCandidatesServerNames = [];
 
 	constructor(ns)
 	{
@@ -42,7 +47,8 @@ export class AccessManager extends Manager
 
 	init()
 	{
-		this.targetServerNames = getAllServerNames(this.ns);
+		this.rootAccessTargetServerNames = getAllServerNames(this.ns);
+		this.backdoorTargetServerNames = getAllServerNames(this.ns);
 
 		this.torRouter = this.ns.hasTorRouter();
 	}
@@ -53,20 +59,9 @@ export class AccessManager extends Manager
 
 		this.updateTargetServerList();
 
-		var targetServerNamesLeft = [];
-
-		for (var i = 0; i < this.targetServerNames.length; i++)
-		{
-			var targetServerName = this.targetServerNames[i];
-
-			if (!this.ns.hasRootAccess(targetServerName)
-				&& !this.getRootAccess(targetServerName))
-			{
-				targetServerNamesLeft.push(targetServerName);
-			}
-		}
-
-		this.targetServerNames = targetServerNamesLeft;
+		await this.getRootAccesses();
+		
+		await this.installBackdoorsOnServers();
 	}
 
 	updateHackingSoftwareInfo()
@@ -74,7 +69,7 @@ export class AccessManager extends Manager
 		if (this.numOfHackingSoftwareInstalled < 5)
 		{
 			if (!this.hasBruteSSH
-				&& this.ns.fileExists("BruteSSH.exe"))
+					&& this.ns.fileExists("BruteSSH.exe"))
 			{
 				this.hasBruteSSH = true;
 
@@ -82,7 +77,7 @@ export class AccessManager extends Manager
 			}
 
 			if (!this.hasFTPCrack
-				&& this.ns.fileExists("FTPCrack.exe"))
+					&& this.ns.fileExists("FTPCrack.exe"))
 			{
 				this.hasFTPCrack = true;
 
@@ -90,7 +85,7 @@ export class AccessManager extends Manager
 			}
 
 			if (!this.hasRelaySMTP
-				&& this.ns.fileExists("relaySMTP.exe"))
+					&& this.ns.fileExists("relaySMTP.exe"))
 			{
 				this.hasRelaySMTP = true;
 
@@ -98,7 +93,7 @@ export class AccessManager extends Manager
 			}
 
 			if (!this.hasHTTPWorm
-				&& this.ns.fileExists("HTTPWorm.exe"))
+					&& this.ns.fileExists("HTTPWorm.exe"))
 			{
 				this.hasHTTPWorm = true;
 
@@ -106,7 +101,7 @@ export class AccessManager extends Manager
 			}
 
 			if (!this.hasSQLInject
-				&& this.ns.fileExists("SQLInject.exe"))
+					&& this.ns.fileExists("SQLInject.exe"))
 			{
 				this.hasSQLInject = true;
 
@@ -118,15 +113,34 @@ export class AccessManager extends Manager
 	updateTargetServerList()
 	{
 		if (!this.torRouter
-			&& this.ns.hasTorRouter())
+				&& this.ns.hasTorRouter())
 		{
 			this.torRouter = true;
 
-			this.targetServerNames = getAllServerNames(this.ns);
+			this.rootAccessTargetServerNames = getAllServerNames(this.ns);
+			this.backdoorTargetServerNames = getAllServerNames(this.ns);
 		}
 	}
 
-	getRootAccess(serverName)
+	async getRootAccesses()
+	{
+		var targetServerNamesLeft = [];
+
+		for (var i = 0; i < this.rootAccessTargetServerNames.length; i++)
+		{
+			var targetServerName = this.rootAccessTargetServerNames[i];
+
+			if (!this.ns.hasRootAccess(targetServerName)
+					&& !await this.getRootAccess(targetServerName))
+			{
+				targetServerNamesLeft.push(targetServerName);
+			}
+		}
+
+		this.rootAccessTargetServerNames = targetServerNamesLeft;
+	}
+
+	async getRootAccess(serverName)
 	{
 		var ret = false;
 
@@ -157,7 +171,7 @@ export class AccessManager extends Manager
 		if (requiredPorts <= this.numOfHackingSoftwareInstalled)
 		{
 			if (requiredPorts > 0
-				&& this.hasBruteSSH)
+					&& this.hasBruteSSH)
 			{
 				this.ns.brutessh(serverName);
 
@@ -165,7 +179,7 @@ export class AccessManager extends Manager
 			}
 
 			if (requiredPorts > 0
-				&& this.hasFTPCrack)
+					&& this.hasFTPCrack)
 			{
 				this.ns.ftpcrack(serverName);
 
@@ -173,7 +187,7 @@ export class AccessManager extends Manager
 			}
 
 			if (requiredPorts > 0
-				&& this.hasRelaySMTP)
+					&& this.hasRelaySMTP)
 			{
 				this.ns.relaysmtp(serverName);
 
@@ -181,7 +195,7 @@ export class AccessManager extends Manager
 			}
 
 			if (requiredPorts > 0
-				&& this.hasHTTPWorm)
+					&& this.hasHTTPWorm)
 			{
 				this.ns.httpworm(serverName);
 
@@ -189,7 +203,7 @@ export class AccessManager extends Manager
 			}
 
 			if (requiredPorts > 0
-				&& this.hasSQLInject)
+					&& this.hasSQLInject)
 			{
 				this.ns.sqlinject(serverName);
 			}
@@ -200,8 +214,54 @@ export class AccessManager extends Manager
 		return ret;
 	}
 
+	async installBackdoorsOnServers()
+	{
+		var targetServerNamesLeft = [];
+
+		for (var i = 0; i < this.backdoorTargetServerNames.length; i++)
+		{
+			var targetServerName = this.backdoorTargetServerNames[i];
+
+			if (!this.ns.getServer(targetServerName).backdoorInstalled
+					&& !await this.installBackdoorOnServer(targetServerName))
+			{
+				targetServerNamesLeft.push(targetServerName);
+			}
+		}
+
+		this.backdoorTargetServerNames = targetServerNamesLeft;
+	}
+
+	async installBackdoorOnServer(serverName)
+	{
+		var ret = false;
+
+		if (this.ns.hasRootAccess(serverName))
+		{
+			var backdoorInstallerService = new BackdoorInstallerService(
+				this.ns,
+				serverName);
+
+			await backdoorInstallerService.startOperation();
+
+			ret = true;
+		}
+
+		return ret;
+	}
+
 	shouldStopOperation()
 	{
-		return this.targetServerNames.length == 0;
+		return this.rootAccessTargetServerNames.length == 0
+				&& this.backdoorTargetServerNames.length == 0
+				&& this.torRouter;
+	}
+
+	setFlags()
+	{
+		this.ns.write(
+			'flags/AllAccessGranted.txt',
+			'1',
+			'w');
 	}
 }
