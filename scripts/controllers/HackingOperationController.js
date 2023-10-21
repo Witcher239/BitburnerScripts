@@ -96,11 +96,11 @@ export class HackingOperationController
 					Math.ceil(numOfThreadsRequired * numOfThreadsCoefficient));
 
 				if (await executeOnRemoteServer(
-						this.ns,
-						this.scriptName,
-						serverName,
-						numOfThreadsToExecute,
-						[this.targetServerName]))
+							this.ns,
+							this.scriptName,
+							serverName,
+							numOfThreadsToExecute,
+							[this.targetServerName]))
 				{
 					numOfExecutedThreads = numOfThreadsToExecute;
 				}
