@@ -1,10 +1,10 @@
 /**@param {NS} ns**/
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
-import {BackdoorInstallerService} from "/scripts/services/BackdoorInstallerService.js"
+import {BackdoorInstallerService} from "scripts/services/BackdoorInstallerService"
 
-import {getAllServerNames} from "/scripts/util/util.js"
+import {getAllServerNames} from "scripts/util/util"
 
 export async function main(ns)
 {

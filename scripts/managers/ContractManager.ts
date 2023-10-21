@@ -1,18 +1,18 @@
 /**@param {NS} ns**/
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
-import {StockPriceContractSolver} from "/scripts/contractSolvers/StockPriceContractSolver.js"
-import {SanitizeParenthesesContractSolver} from "/scripts/contractSolvers/SanitizeParenthesesContractSolver.js"
-import {PrimeFactorContractSolver} from "/scripts/contractSolvers/PrimeFactorContractSolver.js"
-import {MaxSumContractSolver} from "/scripts/contractSolvers/MaxSumContractSolver.js"
-import {RLECompressionContractSolver} from "/scripts/contractSolvers/RLECompressionContractSolver.js"
-import {LZDecompressionContractSolver} from "scripts/contractSolvers/LZDecompressionContractSolver.js"
-import {LZCompressionContractSolver} from "scripts/contractSolvers/LZCompressionContractSolver.js"
-import {IPAddressesContractSolver} from "/scripts/contractSolvers/IPAddressesContractSolver.js"
-import {ArrayJumpingContractSolver} from "/scripts/contractSolvers/ArrayJumpingContractSolver.js"
+import {StockPriceContractSolver} from "scripts/contractSolvers/StockPriceContractSolver"
+import {SanitizeParenthesesContractSolver} from "scripts/contractSolvers/SanitizeParenthesesContractSolver"
+import {PrimeFactorContractSolver} from "scripts/contractSolvers/PrimeFactorContractSolver"
+import {MaxSumContractSolver} from "scripts/contractSolvers/MaxSumContractSolver"
+import {RLECompressionContractSolver} from "scripts/contractSolvers/RLECompressionContractSolver"
+import {LZDecompressionContractSolver} from "scripts/contractSolvers/LZDecompressionContractSolver"
+import {LZCompressionContractSolver} from "scripts/contractSolvers/LZCompressionContractSolver"
+import {IPAddressesContractSolver} from "scripts/contractSolvers/IPAddressesContractSolver"
+import {ArrayJumpingContractSolver} from "scripts/contractSolvers/ArrayJumpingContractSolver"
 
-import {getAllServerNames} from "/scripts/util/util.js"
+import {getAllServerNames} from "scripts/util/util"
 
 export async function main(ns)
 {

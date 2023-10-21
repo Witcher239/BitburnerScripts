@@ -1,10 +1,10 @@
 /** @param {NS} ns */
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
-import {WeakenController} from "/scripts/controllers/WeakenController.js"
-import {GrowController} from "/scripts/controllers/GrowController.js"
-import {HackController} from "/scripts/controllers/HackController.js"
+import {WeakenController} from "scripts/controllers/WeakenController"
+import {GrowController} from "scripts/controllers/GrowController"
+import {HackController} from "scripts/controllers/HackController"
 
 export async function main(ns)
 {

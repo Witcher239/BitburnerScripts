@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 
-import {ServerInfoModel} from "/scripts/models/ServerInfoModel.js"
+import {ServerInfoModel} from "scripts/models/ServerInfoModel"
 
 export class ServerInfoBuilderService
 {

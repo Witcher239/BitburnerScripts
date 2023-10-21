@@ -1,7 +1,7 @@
 /** @param {NS} ns */
 
-import {executeOnRemoteServer} from "/scripts/util/util.js"
-import {getAllServerNames} from "/scripts/util/util.js"
+import {executeOnRemoteServer} from "scripts/util/util"
+import {getAllServerNames} from "scripts/util/util"
 
 export class HackingOperationController
 {

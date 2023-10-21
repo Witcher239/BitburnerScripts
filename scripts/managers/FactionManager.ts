@@ -1,6 +1,6 @@
 /**@param {NS} ns**/
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
 export async function main(ns)
 {

@@ -1,9 +1,9 @@
 /** @param {NS} ns */
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
-import {getAllServerNames} from "/scripts/util/util.js"
-import {executeOnRemoteServer} from "/scripts/util/util.js"
+import {getAllServerNames} from "scripts/util/util"
+import {executeOnRemoteServer} from "scripts/util/util"
 
 export async function main(ns)
 {

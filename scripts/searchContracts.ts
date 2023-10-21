@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 
-import {getAllServerNames} from "/scripts/util/util.js"
+import {getAllServerNames} from "scripts/util/util"
 
 export async function main(ns)
 {

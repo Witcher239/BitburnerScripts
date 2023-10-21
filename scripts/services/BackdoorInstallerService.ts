@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 
-import {RouteFinderService} from "/scripts/services/RouteFinderService.js"
+import {RouteFinderService} from "scripts/services/RouteFinderService"
 
 export async function main(ns)
 {

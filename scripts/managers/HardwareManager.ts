@@ -1,8 +1,8 @@
 /**@param {NS} ns**/
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
-import {getPurchasedServerNames} from "/scripts/util/util.js"
+import {getPurchasedServerNames} from "scripts/util/util"
 
 export async function main(ns)
 {

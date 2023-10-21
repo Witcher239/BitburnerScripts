@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 
-import {HackingOperationController} from "/scripts/controllers/HackingOperationController.js"
+import {HackingOperationController} from "scripts/controllers/HackingOperationController"
 
 export class GrowController extends HackingOperationController
 {

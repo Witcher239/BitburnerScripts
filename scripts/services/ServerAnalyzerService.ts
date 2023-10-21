@@ -1,8 +1,8 @@
 /** @param {NS} ns */
 
-import {ServerInfoBuilderService} from "/scripts/services/ServerInfoBuilderService.js"
+import {ServerInfoBuilderService} from "scripts/services/ServerInfoBuilderService"
 
-import {getAllServerNames} from "/scripts/util/util.js"
+import {getAllServerNames} from "scripts/util/util"
 
 export async function main(ns)
 {

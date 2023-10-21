@@ -1,8 +1,8 @@
 /**@param {NS} ns**/
 
-import {Manager} from "/scripts/managers/Manager.js"
+import {Manager} from "scripts/managers/Manager"
 
-import {UpgradeHacknetNodeService} from "/scripts/services/UpgradeHacknetNodeService.js"
+import {UpgradeHacknetNodeService} from "scripts/services/UpgradeHacknetNodeService"
 
 export async function main(ns)
 {
