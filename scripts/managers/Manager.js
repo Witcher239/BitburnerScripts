@@ -28,6 +28,8 @@ export class Manager
 
 			if (this.shouldStopOperation())
 			{
+				this.setFlags();
+
 				break;
 			}
 			else if (this.waitTime > 0)
@@ -60,5 +62,10 @@ export class Manager
 	shouldStopOperation()
 	{
 		return false;
+	}
+
+	setFlags()
+	{
+
 	}
 }
