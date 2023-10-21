@@ -7,13 +7,16 @@ import {getPurchasedServerNames} from "/scripts/util/util.js"
 export async function main(ns)
 {
 	var hardwareManager = new HardwareManager(ns);
-
+	
 	await hardwareManager.startOperation();
 }
 
 export class HardwareManager extends Manager
 {
-	fractionOfMoneyForHardwareUpgrades = 0.001;
+	fractionOfMoneyForHomeServerUpgrades = 0.9;
+	fractionOfMoneyForTorRouter = 0.1;
+	fractionOfMoneyForServersPurchases = 0.1;
+	fractionOfMoneyForServersUpgrades = 0.01;
 
 	torRouter = false;
 
@@ -21,7 +24,8 @@ export class HardwareManager extends Manager
 
 	upgradableServerNames = [];
 
-	moneyForHardwareUpgrades = 0;
+	moneyForServersPurchases = 0;
+	moneyForServersUpgrades = 0;
 
 	newServerCost = 0;
 
@@ -53,6 +57,8 @@ export class HardwareManager extends Manager
 	{
 		this.updateInfo();
 
+		this.upgradeHomeServer();
+
 		this.buyTorRouter();
 
 		this.buyServers();
@@ -64,7 +70,10 @@ export class HardwareManager extends Manager
 	{
 		this.waitTime = 60000;
 
-		this.moneyForHardwareUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForHardwareUpgrades;
+		this.moneyForHomeServerUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForHomeServerUpgrades;
+		this.moneyForTorRouter = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForTorRouter;
+		this.moneyForServersPurchases = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForServersPurchases;
+		this.moneyForServersUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForServersUpgrades;
 
 		var serverNamesUpdated = false;
 
@@ -102,19 +111,83 @@ export class HardwareManager extends Manager
 		}
 	}
 
+	upgradeHomeServer()
+	{
+		var mustTryToUpgradeMore = true;
+
+		while (mustTryToUpgradeMore)
+		{
+			mustTryToUpgradeMore = this.upgradeHomeServerRam();
+
+			mustTryToUpgradeMore =
+				this.upgradeHomeServerCores()
+				|| mustTryToUpgradeMore;
+		}
+	}
+
+	upgradeHomeServerRam()
+	{
+		var upgraded = false;
+
+		var upgradeCost = this.ns.singularity.getUpgradeHomeRamCost();
+
+		if (upgradeCost <= this.moneyForHomeServerUpgrades
+				&& this.ns.singularity.upgradeHomeRam())
+		{
+			this.moneyForHomeServerUpgrades -= upgradeCost;
+
+			this.ns.print(
+				'Home server RAM has been upgraded to '
+				+ this.ns.formatRam(this.ns.getServerMaxRam('home'))
+				+ ' for '
+				+ this.ns.formatNumber(upgradeCost));
+
+			this.waitTime = 1000;
+
+			upgraded = true;
+		}
+
+		return upgraded;
+	}
+
+	upgradeHomeServerCores()
+	{
+		var upgraded = false;
+
+		var upgradeCost = this.ns.singularity.getUpgradeHomeCoresCost();
+
+		if (upgradeCost <= this.moneyForHomeServerUpgrades
+				&& this.ns.singularity.upgradeHomeCores())
+		{
+			this.moneyForHomeServerUpgrades -= upgradeCost;
+
+			this.ns.print(
+				'Home server cores have been upgraded to '
+				+ this.ns.getServer('home').cpuCores
+				+ ' for '
+				+ this.ns.formatNumber(upgradeCost));
+
+			this.waitTime = 1000;
+
+			upgraded = true;
+		}
+
+		return upgraded;
+	}
+
 	buyTorRouter()
 	{
 		if (!this.torRouter
-			&& this.moneyForHardwareUpgrades > 0)
+			&& this.moneyForTorRouter > 200000)
 		{
-			//TODO Singularity
+			this.ns.singularity.purchaseTor();
 		}
 	}
 
 	buyServers()
 	{
 		while (this.serverNames.length != 25
-			   && this.newServerCost < this.moneyForHardwareUpgrades)
+			   && this.newServerCost < this.moneyForServersPurchases)
 		{
 			var newServerName = this.generateServerName();
 
@@ -126,7 +199,7 @@ export class HardwareManager extends Manager
 
 			this.upgradableServerNames.push(newServerName);
 
-			this.moneyForHardwareUpgrades -= this.newServerCost;
+			this.moneyForServersPurchases -= this.newServerCost;
 
 			this.waitTime = 1000;
 		}
@@ -184,12 +257,12 @@ export class HardwareManager extends Manager
 				serverName,
 				newRAM);
 
-			if (upgradeCost < this.moneyForHardwareUpgrades
+			if (upgradeCost <= this.moneyForServersUpgrades
 				&& this.ns.upgradePurchasedServer(
 						serverName,
 						newRAM))
 			{
-				this.moneyForHardwareUpgrades -= upgradeCost;
+				this.moneyForServersUpgrades -= upgradeCost;
 
 				this.ns.print(
 					'Server '
