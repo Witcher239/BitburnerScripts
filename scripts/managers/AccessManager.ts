@@ -1,12 +1,12 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-import {BackdoorInstallerService} from "scripts/services/BackdoorInstallerService"
+import { BackdoorInstallerService } from "scripts/services/BackdoorInstallerService";
 
-import {getAllServerNames} from "scripts/util/util"
+import { getAllServerNames } from "scripts/util/util";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var accessManager = new AccessManager(ns);
 
@@ -15,8 +15,8 @@ export async function main(ns)
 
 export class AccessManager extends Manager
 {
-	rootAccessTargetServerNames = [];
-	backdoorTargetServerNames = [];
+	rootAccessTargetServerNames: string[] = [];
+	backdoorTargetServerNames: string[] = [];
 
 	torRouter = false;
 
@@ -30,7 +30,7 @@ export class AccessManager extends Manager
 
 	backdoorCandidatesServerNames = [];
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -124,7 +124,7 @@ export class AccessManager extends Manager
 
 	async getRootAccesses()
 	{
-		var targetServerNamesLeft = [];
+		var targetServerNamesLeft: string[] = [];
 
 		for (var i = 0; i < this.rootAccessTargetServerNames.length; i++)
 		{
@@ -140,7 +140,7 @@ export class AccessManager extends Manager
 		this.rootAccessTargetServerNames = targetServerNamesLeft;
 	}
 
-	async getRootAccess(serverName)
+	async getRootAccess(serverName: string)
 	{
 		var ret = false;
 
@@ -157,12 +157,12 @@ export class AccessManager extends Manager
 		return ret;
 	}
 
-	isHackingLevelEnough(serverName)
+	isHackingLevelEnough(serverName: string)
 	{
 		return this.ns.getServerRequiredHackingLevel(serverName) <= this.ns.getHackingLevel();
 	}
 
-	openPorts(serverName)
+	openPorts(serverName: string)
 	{
 		var ret = false;
 
@@ -232,7 +232,7 @@ export class AccessManager extends Manager
 		this.backdoorTargetServerNames = targetServerNamesLeft;
 	}
 
-	async installBackdoorOnServer(serverName)
+	async installBackdoorOnServer(serverName: string)
 	{
 		var ret = false;
 

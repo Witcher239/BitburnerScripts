@@ -1,12 +1,12 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {HackingOperationController} from "scripts/controllers/HackingOperationController"
+import { HackingOperationController } from "scripts/controllers/HackingOperationController";
 
 export class GrowController extends HackingOperationController
 {
 	constructor(
-		ns,
-		targetServerName)
+		ns: NS,
+		targetServerName: string)
 	{
 		super(
 			ns,
@@ -19,7 +19,7 @@ export class GrowController extends HackingOperationController
 			'home');	
 	}
 
-	getNumOfThreadsCoefficient(serverName)
+	getNumOfThreadsCoefficient(serverName: string)
 	{
 		var numOfThreadsCoefficient;
 

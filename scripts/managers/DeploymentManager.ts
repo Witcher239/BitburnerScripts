@@ -1,11 +1,11 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-import {getAllServerNames} from "scripts/util/util"
-import {executeOnRemoteServer} from "scripts/util/util"
+import { getAllServerNames } from "scripts/util/util";
+import { executeOnRemoteServer } from "scripts/util/util";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var deploymentManager = new DeploymentManager(ns);
 
@@ -14,9 +14,9 @@ export async function main(ns)
 
 export class DeploymentManager extends Manager
 {
-	serverNames = [];
+	serverNames: string[] = [];
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -235,13 +235,13 @@ export class DeploymentManager extends Manager
 		}
 	}
 
-	canDeployHackingManager(targetServerName)
+	canDeployHackingManager(targetServerName: string)
 	{
 		return this.ns.hasRootAccess(targetServerName)
 				&& this.ns.getServerMaxMoney(targetServerName) > 0;
 	}
 
-	async deployHackingManager(targetServerName)
+	async deployHackingManager(targetServerName: string)
 	{
 		if (!this.ns.isRunning(
 					'/scripts/managers/HackingManager.js',

@@ -1,6 +1,6 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {ServerInfoModel} from "scripts/models/ServerInfoModel"
+import { ServerInfoModel } from "scripts/models/ServerInfoModel";
 
 export class ServerInfoBuilderService
 {
@@ -8,11 +8,11 @@ export class ServerInfoBuilderService
 
 	serverName = '';
 
-	serverInfoModel = null;
+	serverInfoModel = {} as ServerInfoModel;
 
 	constructor(
-		ns,
-		serverName)
+		ns: NS,
+		serverName: string)
 	{
 		this.ns = ns;
 

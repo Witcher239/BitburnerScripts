@@ -1,16 +1,14 @@
-/** @param {NS} ns */
-
 export class ArrayJumpingContractSolver
 {
-	jumpLengths = [];
+	jumpLengths: number[] = [];
 
 	returnMinJumpsRequired = false;
 
 	minJumpsRequired = 0;
 
 	constructor(
-		jumpLengths,
-		returnMinJumpsRequired)
+		jumpLengths: number[],
+		returnMinJumpsRequired: boolean)
 	{
 		this.jumpLengths = jumpLengths;
 
@@ -47,7 +45,7 @@ export class ArrayJumpingContractSolver
 		}
 	}
 
-	canReachTheEndFromPosition(positionIndex)
+	canReachTheEndFromPosition(positionIndex: number)
 	{
 		return positionIndex + this.jumpLengths[positionIndex] >= this.jumpLengths.length - 1;
 	}

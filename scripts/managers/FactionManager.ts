@@ -1,8 +1,8 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var factionManager = new FactionManager(ns);
 
@@ -11,7 +11,7 @@ export async function main(ns)
 
 export class FactionManager extends Manager
 {
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}

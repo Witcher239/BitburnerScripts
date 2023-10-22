@@ -1,12 +1,10 @@
-/** @param {NS} ns */
-
 export class PrimeFactorContractSolver
 {
 	inputNumber = 0;
 
-	primeFactors = [];
+	primeFactors: number[] = [];
 
-	constructor(inputNumber)
+	constructor(inputNumber: number)
 	{
 		this.inputNumber = inputNumber;
 	}
@@ -18,7 +16,7 @@ export class PrimeFactorContractSolver
 		return this.largestPrimeFactor();
 	}
 
-	doRecursivePrimeFactorsSearch(number)
+	doRecursivePrimeFactorsSearch(number: number)
 	{
 		for (var i = 2; i <= number; i++)
 		{

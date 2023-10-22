@@ -1,16 +1,14 @@
-/** @param {NS} ns */
-
 export class StockPriceContractSolver
 {
 	numOfTransactions = 0;
 
-	prices = [];
+	prices: number[] = [];
 
 	maxProfit = 0;
 
 	constructor(
-		numOfTransactions,
-		prices)
+		numOfTransactions: number,
+		prices: number[])
 	{
 		this.numOfTransactions = numOfTransactions;
 		
@@ -38,7 +36,7 @@ export class StockPriceContractSolver
 		}
 	}
 
-	searchMaxProfitInSpecifiedNumOfPieces(numOfPieces)
+	searchMaxProfitInSpecifiedNumOfPieces(numOfPieces: number)
 	{
 		if (this.canSearchMaxProfitInSpecifiedNumOfPieces(numOfPieces))
 		{
@@ -50,16 +48,16 @@ export class StockPriceContractSolver
 		}
 	}
 
-	canSearchMaxProfitInSpecifiedNumOfPieces(numOfPieces)
+	canSearchMaxProfitInSpecifiedNumOfPieces(numOfPieces: number)
 	{
 		return this.prices.length / 2 >= numOfPieces;
 	}
 
 	doRecursiveMaxProfitSearch(
-		numOfPieces,
-		currentPieceNum,
-		startIndex,
-		previousProfit)
+		numOfPieces: number,
+		currentPieceNum: number,
+		startIndex: number,
+		previousProfit: number)
 	{
 		if (currentPieceNum == numOfPieces)
 		{
@@ -95,7 +93,7 @@ export class StockPriceContractSolver
 		}
 	}
 
-	maxProfitInPriceSegment(pricesSegment)
+	maxProfitInPriceSegment(pricesSegment: number[])
 	{
 		var maxProfit = 0;
 

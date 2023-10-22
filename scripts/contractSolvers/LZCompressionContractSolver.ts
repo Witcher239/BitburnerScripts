@@ -1,12 +1,10 @@
-/** @param {NS} ns */
-
 export class LZCompressionContractSolver
 {
 	inputExpression = '';
 
 	outputExpression = '';
 
-	constructor(inputExpression)
+	constructor(inputExpression: string)
 	{
 		this.inputExpression = inputExpression;
 	}
@@ -75,12 +73,14 @@ export class LZCompressionContractSolver
 				}
 				else
 				{
-					var referenceLength = 0;
+					var referenceLengthString = '';
 					var referenceOutputExpression = '';
 
-					[referenceLength, referenceOutputExpression] = this.encodeReference(
+					[referenceLengthString, referenceOutputExpression] = this.encodeReference(
 						startingIndex + i,
 						i != 0);
+
+					var referenceLength = parseInt(referenceLengthString);
 
 					encodingLength += referenceOutputExpression.length;
 					encodedLength += referenceLength;
@@ -109,8 +109,8 @@ export class LZCompressionContractSolver
 	}
 
 	tryToSaveEncoding(
-		startingIndex,
-		outputExpression)
+		startingIndex: number,
+		outputExpression: string)
 	{
 		var ret = false;
 
@@ -189,6 +189,6 @@ export class LZCompressionContractSolver
 			}
 		}
 
-		return [bestLengthFound, referenceExpression]
+		return [bestLengthFound.toString(), referenceExpression]
 	}
 }

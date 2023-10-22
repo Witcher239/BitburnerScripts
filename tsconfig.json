@@ -1,0 +1,25 @@
+{
+  "include": ["**/*"],
+  "exclude": ["lib/react.ts", ".git/**/*", ".vs/**/*", ".gitignore", "bitburnerSave_1679269972_BN4x1.json", "LICENSE", "README.md"],
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "classic",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "strict": true,
+    "rootDir": "",
+    "outDir": "dist/",
+    "baseUrl": "",
+    "allowJs": true,
+    "jsx": "react",
+    "paths": {
+      "/*": ["*"],
+      "@ns": ["../NetscriptDefinitions.d.ts"],
+      "@react": ["lib/react.ts"]
+    }
+  }
+}

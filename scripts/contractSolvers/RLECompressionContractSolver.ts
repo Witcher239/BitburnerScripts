@@ -1,12 +1,10 @@
-/** @param {NS} ns */
-
 export class RLECompressionContractSolver
 {
 	inputExpression = '';
 
 	outputExpression = '';
 
-	constructor(inputExpression)
+	constructor(inputExpression: string)
 	{
 		this.inputExpression = inputExpression;
 	}

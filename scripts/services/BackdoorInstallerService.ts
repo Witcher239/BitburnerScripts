@@ -1,10 +1,10 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {RouteFinderService} from "scripts/services/RouteFinderService"
+import { RouteFinderService } from "scripts/services/RouteFinderService";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
-	var targetServerName = ns.args[0];
+	var targetServerName = ns.args[0].toString();
 
 	var backdoorInstallerService = new BackdoorInstallerService(
 		ns,
@@ -21,11 +21,11 @@ export class BackdoorInstallerService
 
 	callerServerName = '';
 
-	route = [];
+	route: string[] = [];
 
 	constructor(
-		ns,
-		targetServerName)
+		ns: NS,
+		targetServerName: string)
 	{
 		this.ns = ns;
 

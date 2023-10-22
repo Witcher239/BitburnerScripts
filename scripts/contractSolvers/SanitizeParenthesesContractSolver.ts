@@ -1,14 +1,12 @@
-/** @param {NS} ns */
-
 export class SanitizeParenthesesContractSolver
 {
 	inputExpression = "";
 
-	outputExpressions = [];
+	outputExpressions: string[] = [];
 
 	minNumOfDeletes = 0;
 
-	constructor(inputExpression)
+	constructor(inputExpression: string)
 	{
 		this.inputExpression = inputExpression;
 	}
@@ -25,7 +23,7 @@ export class SanitizeParenthesesContractSolver
 		this.doRecursiveOutputExpressionsSearch(this.inputExpression);
 	}
 
-	doRecursiveOutputExpressionsSearch(expression)
+	doRecursiveOutputExpressionsSearch(expression: string)
 	{
 		var numOfDeletes = this.deletesAmount(expression);
 
@@ -67,12 +65,12 @@ export class SanitizeParenthesesContractSolver
 		}
 	}
 
-	deletesAmount(expression)
+	deletesAmount(expression: string)
 	{
 		return this.inputExpression.length - expression.length;
 	}
 
-	validateParentheses(expression)
+	validateParentheses(expression: string)
 	{
 		var ret = true;
 
@@ -110,8 +108,8 @@ export class SanitizeParenthesesContractSolver
 	}
 
 	removeCharacter(
-		expression,
-		characterIndex)
+		expression: string,
+		characterIndex: number)
 	{
 		var ret = expression.substring(
 			0,

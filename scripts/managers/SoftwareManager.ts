@@ -1,8 +1,8 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var softwareManager = new SoftwareManager(ns);
 
@@ -15,9 +15,9 @@ export class SoftwareManager extends Manager
 
 	moneyForSoftwarePurchases = 0;
 
-	darkwebPrograms = [];
+	darkwebPrograms: string[] = [];
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -53,7 +53,7 @@ export class SoftwareManager extends Manager
 
 	updateRemainingDarkwebProgramsList()
 	{
-		var darkwebProgramsLeft = [];
+		var darkwebProgramsLeft: string[] = [];
 
 		for (var i = 0; i < this.darkwebPrograms.length; i++)
 		{

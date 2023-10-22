@@ -1,5 +1,3 @@
-/** @param {NS} ns */
-
 export class ServerInfoModel
 {
 	name = '';
@@ -12,4 +10,9 @@ export class ServerInfoModel
 
 	freeRAM = 0;
 	maxRAM = 0;
+
+	constructor()
+	{
+
+    }
 }

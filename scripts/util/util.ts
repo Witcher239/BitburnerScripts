@@ -1,7 +1,7 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
 export function getAllServerNames(
-	ns,
+	ns: NS,
 	serverName = 'home',
 	allServerNames = ['home'])
 {
@@ -25,7 +25,7 @@ export function getAllServerNames(
 	return allServerNames;
 }
 
-export function getPurchasedServerNames(ns)
+export function getPurchasedServerNames(ns: NS)
 {
 	var purchasedServerNames = [];
 
@@ -45,11 +45,11 @@ export function getPurchasedServerNames(ns)
 }
 
 export async function executeOnRemoteServer(
-	ns,
-	scriptName,
-	serverName,
+	ns: NS,
+	scriptName: string,
+	serverName: string,
 	numThreads = 1,
-	args = [])
+	args: string[] = [])
 {
 	var successfullRun = false;
 
@@ -61,7 +61,7 @@ export async function executeOnRemoteServer(
 		scriptName,
 		ns.getHostname());
 
-	if (numThreads == 'max')
+	if (numThreads == -1)
 	{
 		numThreads = scriptRAM == 0 ?
 			1 :
@@ -114,8 +114,8 @@ export async function executeOnRemoteServer(
 }
 
 export function getServerFreeRAM(
-	ns,
-	serverName)
+	ns: NS,
+	serverName: string)
 {
 	var maxRAM = ns.getServerMaxRam(serverName);
 

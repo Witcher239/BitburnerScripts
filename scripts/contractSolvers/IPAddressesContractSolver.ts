@@ -1,12 +1,10 @@
-/** @param {NS} ns */
-
 export class IPAddressesContractSolver
 {
 	inputExpression = '';
 
-	ipAddresses = [];
+	ipAddresses: string[] = [];
 
-	constructor(inputExpression)
+	constructor(inputExpression: string)
 	{
 		this.inputExpression = inputExpression;
 	}
@@ -62,7 +60,7 @@ export class IPAddressesContractSolver
 		}
 	}
 
-	validateSegment(segment)
+	validateSegment(segment: string)
 	{
 		var ret = segment != '';
 

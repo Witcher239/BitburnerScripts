@@ -1,12 +1,10 @@
-/** @param {NS} ns */
-
 export class MaxSumContractSolver
 {
-	numbers = [];
+	numbers: number[] = [];
 
 	maxSum = 0;
 
-	constructor(numbers)
+	constructor(numbers: number[])
 	{
 		this.numbers = numbers;
 	}
@@ -26,7 +24,7 @@ export class MaxSumContractSolver
 		}
 	}
 
-	searchMaxSumInPiecesOfSpecifiedSize(sizeOfPiece)
+	searchMaxSumInPiecesOfSpecifiedSize(sizeOfPiece: number)
 	{
 		for (var i = 0; i < this.numbers.length - sizeOfPiece + 1; i++)
 		{
@@ -42,7 +40,7 @@ export class MaxSumContractSolver
 		}
 	}
 
-	sumInNumbersSegment(numbersSegment)
+	sumInNumbersSegment(numbersSegment: number[])
 	{
 		var sum = 0;
 

@@ -1,14 +1,14 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-import {WeakenController} from "scripts/controllers/WeakenController"
-import {GrowController} from "scripts/controllers/GrowController"
-import {HackController} from "scripts/controllers/HackController"
+import { WeakenController } from "scripts/controllers/WeakenController";
+import { GrowController } from "scripts/controllers/GrowController";
+import { HackController } from "scripts/controllers/HackController";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
-	var targetServerName = ns.args[0];
+	var targetServerName = ns.args[0].toString();
 
 	var hackingManager = new HackingManager(
 		ns,
@@ -28,8 +28,8 @@ export class HackingManager extends Manager
 	acceptableMoneyLevelPercentage = 100;
 
 	constructor(
-		ns,
-		targetServerName)
+		ns: NS,
+		targetServerName: string)
 	{
 		super(ns);
 

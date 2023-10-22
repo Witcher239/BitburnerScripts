@@ -1,10 +1,10 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-import {getPurchasedServerNames} from "scripts/util/util"
+import { getPurchasedServerNames } from "scripts/util/util";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var hardwareManager = new HardwareManager(ns);
 	
@@ -20,16 +20,18 @@ export class HardwareManager extends Manager
 
 	torRouter = false;
 
-	serverNames = [];
+	serverNames: string[] = [];
 
-	upgradableServerNames = [];
+	upgradableServerNames: string[] = [];
 
+	moneyForHomeServerUpgrades = 0;
+	moneyForTorRouter = 0;
 	moneyForServersPurchases = 0;
 	moneyForServersUpgrades = 0;
 
 	newServerCost = 0;
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -89,7 +91,7 @@ export class HardwareManager extends Manager
 		if (serverNamesUpdated
 			|| this.upgradableServerNames.length > 0)
 		{
-			var newUpgradableServerNames = [];
+			var newUpgradableServerNames: string[] = [];
 
 			for (var i = 0; i < this.serverNames.length; i++)
 			{
@@ -228,7 +230,7 @@ export class HardwareManager extends Manager
 		return serverName;
 	}
 
-	getServerNameForNumber(number)
+	getServerNameForNumber(number: number)
 	{
 		var prefix = number < 10 ?
 			'hack0' :
@@ -245,7 +247,7 @@ export class HardwareManager extends Manager
 		}
 	}
 
-	upgradeServer(serverName)
+	upgradeServer(serverName: string)
 	{
 		var mustTryToUpgradeMore = true;
 

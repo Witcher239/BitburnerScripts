@@ -1,20 +1,20 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-import {StockPriceContractSolver} from "scripts/contractSolvers/StockPriceContractSolver"
-import {SanitizeParenthesesContractSolver} from "scripts/contractSolvers/SanitizeParenthesesContractSolver"
-import {PrimeFactorContractSolver} from "scripts/contractSolvers/PrimeFactorContractSolver"
-import {MaxSumContractSolver} from "scripts/contractSolvers/MaxSumContractSolver"
-import {RLECompressionContractSolver} from "scripts/contractSolvers/RLECompressionContractSolver"
-import {LZDecompressionContractSolver} from "scripts/contractSolvers/LZDecompressionContractSolver"
-import {LZCompressionContractSolver} from "scripts/contractSolvers/LZCompressionContractSolver"
-import {IPAddressesContractSolver} from "scripts/contractSolvers/IPAddressesContractSolver"
-import {ArrayJumpingContractSolver} from "scripts/contractSolvers/ArrayJumpingContractSolver"
+import { StockPriceContractSolver } from "scripts/contractSolvers/StockPriceContractSolver";
+import { SanitizeParenthesesContractSolver } from "scripts/contractSolvers/SanitizeParenthesesContractSolver";
+import { PrimeFactorContractSolver } from "scripts/contractSolvers/PrimeFactorContractSolver";
+import { MaxSumContractSolver } from "scripts/contractSolvers/MaxSumContractSolver";
+import { RLECompressionContractSolver } from "scripts/contractSolvers/RLECompressionContractSolver";
+import { LZDecompressionContractSolver } from "scripts/contractSolvers/LZDecompressionContractSolver";
+import { LZCompressionContractSolver } from "scripts/contractSolvers/LZCompressionContractSolver";
+import { IPAddressesContractSolver } from "scripts/contractSolvers/IPAddressesContractSolver";
+import { ArrayJumpingContractSolver } from "scripts/contractSolvers/ArrayJumpingContractSolver";
 
-import {getAllServerNames} from "scripts/util/util"
+import { getAllServerNames } from "scripts/util/util";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var contractManager = new ContractManager(ns);
 
@@ -23,11 +23,11 @@ export async function main(ns)
 
 export class ContractManager extends Manager
 {
-	serverNames = [];
+	serverNames: string[] = [];
 
 	sendResults = true;
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -55,7 +55,7 @@ export class ContractManager extends Manager
 		}
 	}
 
-	solveContractsFromServer(serverName)
+	solveContractsFromServer(serverName: string)
 	{
 		var contractNames = this.ns.ls(
 			serverName,
@@ -72,8 +72,8 @@ export class ContractManager extends Manager
 	}
 
 	solveContract(
-		serverName,
-		contractName)
+		serverName: string,
+		contractName: string)
 	{
 		var contractType = this.ns.codingcontract.getContractType(
 			contractName,
@@ -112,8 +112,8 @@ export class ContractManager extends Manager
 	}
 
 	getContractSolver(
-		contractType,
-		contractData)
+		contractType: string,
+		contractData: any)
 	{
 		this.sendResults = true;
 

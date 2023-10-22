@@ -1,7 +1,7 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {executeOnRemoteServer} from "scripts/util/util"
-import {getAllServerNames} from "scripts/util/util"
+import { executeOnRemoteServer } from "scripts/util/util";
+import { getAllServerNames } from "scripts/util/util";
 
 export class HackingOperationController
 {
@@ -15,8 +15,8 @@ export class HackingOperationController
 	homeReservedRAMPercent = 10;
 
 	constructor(
-		ns,
-		targetServerName)
+		ns: NS,
+		targetServerName: string)
 	{
 		this.ns = ns;
 
@@ -76,8 +76,8 @@ export class HackingOperationController
 	}
 
 	async runOperationOnServer(
-		serverName,
-		numOfThreadsRequired)
+		serverName: string,
+		numOfThreadsRequired: number)
 	{
 		var numOfExecutedThreads = 0;
 
@@ -89,7 +89,7 @@ export class HackingOperationController
 			{
 				var serverFreeThreads = Math.floor(serverFreeRAM / this.scriptRAM);
 
-				var numOfThreadsCoefficient = this.getNumOfThreadsCoefficient();
+				var numOfThreadsCoefficient = this.getNumOfThreadsCoefficient(serverName);
 
 				var numOfThreadsToExecute = Math.min(
 					serverFreeThreads,
@@ -115,7 +115,7 @@ export class HackingOperationController
 		return 0;
 	}
 
-	getServerFreeRAM(serverName)
+	getServerFreeRAM(serverName: string)
 	{
 		var serverFreeRAM = this.ns.getServerMaxRam(serverName) - this.ns.getServerUsedRam(serverName);
 
@@ -127,7 +127,7 @@ export class HackingOperationController
 		return serverFreeRAM;
 	}
 
-	getNumOfThreadsCoefficient(serverName)
+	getNumOfThreadsCoefficient(serverName: string)
 	{
 		return 1;
 	}

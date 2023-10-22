@@ -1,10 +1,10 @@
-/** @param {NS} ns */
+import { HacknetMultipliers, NodeStats, NS } from '@ns';
 
-export async function main(ns)
+export async function main(ns: NS)
 {
-	var hacknetNodeIndex = ns.args[0];
-	var moneyForUpgrades = ns.args[1];
-	var targetRevenueTime = ns.args[2];
+	var hacknetNodeIndex = Number(ns.args[0]);
+	var moneyForUpgrades = Number(ns.args[1]);
+	var targetRevenueTime = Number(ns.args[2]);
 
 	var upgradeHacknetNodeService = new UpgradeHacknetNodeService(
 		ns,
@@ -25,18 +25,18 @@ export class UpgradeHacknetNodeService
 
 	targetRevenueTime = 0;
 
-	hacknetMultipliers = null;
-	nodeStats = null;
+	hacknetMultipliers = {} as HacknetMultipliers;
+	nodeStats = {} as NodeStats;
 
 	currentTargetRevenueTimeProduction = 0;
 
 	bitnodeMultiplier = 0.05;
 
 	constructor(
-		ns,
-		hacknetNodeIndex,
-		moneyForUpgrades,
-		targetRevenueTime)
+		ns: NS,
+		hacknetNodeIndex: number,
+		moneyForUpgrades: number,
+		targetRevenueTime: number)
 	{
 		this.ns = ns;
 
@@ -240,9 +240,9 @@ export class UpgradeHacknetNodeService
 	}
 
 	calculateTargetRevenueTimeHacknetNodeProduction(
-		level,
-		ram,
-		cores)
+		level: number,
+		ram: number,
+		cores: number)
 	{
 		var ramMultiplier = Math.pow(1.035, (ram - 1));
 		var coresMultiplier = 1 + 0.167 * (cores - 1);

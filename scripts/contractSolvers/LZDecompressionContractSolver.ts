@@ -1,12 +1,10 @@
-/** @param {NS} ns */
-
 export class LZDecompressionContractSolver
 {
 	inputExpression = '';
 
 	outputExpression = '';
 
-	constructor(inputExpression)
+	constructor(inputExpression: string)
 	{
 		this.inputExpression = inputExpression;
 	}
@@ -60,8 +58,8 @@ export class LZDecompressionContractSolver
 	}
 
 	decodeDirectChunk(
-		inputExpression,
-		length)
+		inputExpression: string,
+		length: number)
 	{
 		this.outputExpression += inputExpression.substr(
 			1,
@@ -69,8 +67,8 @@ export class LZDecompressionContractSolver
 	}
 
 	decodeReferenceChunk(
-		inputExpression,
-		length)
+		inputExpression: string,
+		length: number)
 	{
 		var numOfPlacesBefore = parseInt(
 			inputExpression.substr(

@@ -1,10 +1,10 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-import {UpgradeHacknetNodeService} from "scripts/services/UpgradeHacknetNodeService"
+import { UpgradeHacknetNodeService } from "scripts/services/UpgradeHacknetNodeService";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var hacknetManager = new HacknetManager(ns);
 
@@ -23,7 +23,7 @@ export class HacknetManager extends Manager
 
 	bitnodeMultiplier = 0.05;
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -97,7 +97,7 @@ export class HacknetManager extends Manager
 		}
 	}
 
-	upgradeHacknetNode(hacknetNodeIndex)
+	upgradeHacknetNode(hacknetNodeIndex: number)
 	{
 		var upgradeHacknetNodeService = new UpgradeHacknetNodeService(
 			this.ns,

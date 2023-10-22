@@ -1,8 +1,8 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-export async function main(ns)
+export async function main(ns: NS)
 {
-	var targetServerName = ns.args[0];
+	var targetServerName = ns.args[0].toString();
 
 	var routeFinderService = new RouteFinderService(
 		ns,
@@ -19,11 +19,11 @@ export class RouteFinderService
 
 	targetServerName = '';
 
-	route = [];
+	route: string[] = [];
 
 	constructor(
-		ns,
-		targetServerName)
+		ns: NS,
+		targetServerName: string)
 	{
 		this.ns = ns;
 
@@ -43,8 +43,8 @@ export class RouteFinderService
 	}
 
 	searchTargetServerRecursive(
-		currentServerName,
-		previousServerName)
+		currentServerName: string,
+		previousServerName: string): boolean
 	{
 		var targetServerFound = false;
 
@@ -52,7 +52,7 @@ export class RouteFinderService
 
 		for (var i = 0; i < connectedServerNames.length; i++)
 		{
-			var connectedServerName = connectedServerNames[i];
+			var connectedServerName: string = connectedServerNames[i];
 
 			if (connectedServerName == previousServerName)
 			{

@@ -1,6 +1,6 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var organizationSymbols = ns.stock.getSymbols();
 
@@ -37,12 +37,12 @@ export async function main(ns)
 			+ ns.stock.getForecast(organizationSymbol));
 	}
 
-	function getNumOfShares(organizationSymbol)
+	function getNumOfShares(organizationSymbol: string)
 	{
 		return ns.stock.getPosition(organizationSymbol)[0];
 	}
 
-	function getPriceOfShare(organizationSymbol)
+	function getPriceOfShare(organizationSymbol: string)
 	{
 		return ns.stock.getPosition(organizationSymbol)[1];
 	}

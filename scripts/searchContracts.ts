@@ -1,8 +1,8 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {getAllServerNames} from "scripts/util/util"
+import { getAllServerNames } from "scripts/util/util";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var serverNames = getAllServerNames(ns).sort();
 

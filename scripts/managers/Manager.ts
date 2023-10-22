@@ -1,4 +1,4 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
 export class Manager
 {
@@ -6,7 +6,7 @@ export class Manager
 
 	waitTime = 60000;
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		this.ns = ns;
 	}

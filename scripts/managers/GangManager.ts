@@ -1,8 +1,8 @@
-/**@param {NS} ns**/
+import { NS } from '@ns';
 
-import {Manager} from "scripts/managers/Manager"
+import { Manager } from "scripts/managers/Manager";
 
-export async function main(ns)
+export async function main(ns: NS)
 {
 	var gangManager = new GangManager(ns);
 
@@ -11,8 +11,8 @@ export async function main(ns)
 
 export class GangManager extends Manager
 {
-	augmentationNames = [];
-	equipmentNames = [];
+	augmentationNames: string[] = [];
+	equipmentNames: string[] = [];
 
 	newMembersNames = ['Tommy', 'Paul', 'Sam', 'Mike', 'Frank', 'Trevor', 'Zack', 'Dave', 'Andy', 'Luke', 'Goro', 'Kiryu'];
 
@@ -24,7 +24,7 @@ export class GangManager extends Manager
 	moneyForAugmentationsPurchase = 0;
 	moneyForEquipmentPurchase = 0;
 
-	constructor(ns)
+	constructor(ns: NS)
 	{
 		super(ns);
 	}
@@ -138,7 +138,7 @@ export class GangManager extends Manager
 		}
 	}
 
-	purchaseAugmentationsForMember(memberName)
+	purchaseAugmentationsForMember(memberName: string)
 	{
 		var gangMemberInfo = this.ns.gang.getMemberInformation(memberName);
 
@@ -161,7 +161,7 @@ export class GangManager extends Manager
 		}
 	}
 
-	shouldAscendMember(memberName)
+	shouldAscendMember(memberName: string)
 	{
 		var ret = false;
 
@@ -184,7 +184,7 @@ export class GangManager extends Manager
 		return ret;
 	}
 
-	purchaseEquipmentForMember(memberName)
+	purchaseEquipmentForMember(memberName: string)
 	{
 		var gangMemberInfo = this.ns.gang.getMemberInformation(memberName);
 

@@ -1,13 +1,15 @@
-/** @param {NS} ns */
+import { NS } from '@ns';
 
-import {ServerInfoBuilderService} from "scripts/services/ServerInfoBuilderService"
+import { ServerInfoBuilderService } from "scripts/services/ServerInfoBuilderService";
 
-import {getAllServerNames} from "scripts/util/util"
+import { ServerInfoModel } from "../models/ServerInfoModel";
 
-export async function main(ns)
+import { getAllServerNames } from "scripts/util/util";
+
+export async function main(ns: NS)
 {
-	var serverName = ns.args[0];
-	var filter = ns.args[1];
+	var serverName = ns.args[0].toString();
+	var filter = ns.args[1].toString();
 
 	var serverAnalyzerService = new ServerAnalyzerService(
 		ns,
@@ -27,14 +29,14 @@ export class ServerAnalyzerService
 
 	numOfHackablePorts = 0;
 
-	serverInfoModels = [];
+	serverInfoModels: ServerInfoModel[] = [];
 
 	analysisData = '';
 
 	constructor(
-		ns,
-		serverName,
-		filter)
+		ns: NS,
+		serverName: string,
+		filter: string)
 	{
 		this.ns = ns;
 
@@ -124,7 +126,7 @@ export class ServerAnalyzerService
 		return filteredServerList;
 	}
 
-	serverMatchesFilter(serverName)
+	serverMatchesFilter(serverName: string)
 	{
 		var ret = false;
 
@@ -176,7 +178,7 @@ export class ServerAnalyzerService
 
 				if (!this.ns.hasRootAccess(serverName)
 					&& this.ns.getServerRequiredHackingLevel(serverName) > this.ns.getHackingLevel()
-					&& this.ns.getServerNumPortsRequired(serverName) > this.getNumOfHackablePorts)
+					&& this.ns.getServerNumPortsRequired(serverName) > this.numOfHackablePorts)
 				{
 					ret = true;
 				}
@@ -187,7 +189,7 @@ export class ServerAnalyzerService
 		return ret;
 	}
 
-	buildServerInfoModel(serverName)
+	buildServerInfoModel(serverName: string)
 	{
 		var serverInfoBuilderService = new ServerInfoBuilderService(
 			this.ns,
@@ -277,7 +279,7 @@ export class ServerAnalyzerService
 		this.addText('|');
 	}
 
-	addAnalysisDataLine(serverInfoModel)
+	addAnalysisDataLine(serverInfoModel: ServerInfoModel)
 	{
 		this.addText('|');
 
@@ -338,7 +340,7 @@ export class ServerAnalyzerService
 		this.analysisData += '\n';
 	}
 
-	addLine(length)
+	addLine(length: number)
 	{
 		for (var i = 0; i < length; i++)
 		{
@@ -347,7 +349,7 @@ export class ServerAnalyzerService
 	}
 
 	addText(
-		text,
+		text: string,
 		size = text.length)
 	{
 		var spacesBefore = '';
