@@ -48,14 +48,14 @@ export class AccessManager extends Manager
 	init()
 	{
 		this.rootAccessTargetServerNames = getAllServerNames(this.ns);
-		this.backdoorTargetServerNames = getAllServerNames(this.ns);
+		this.backdoorTargetServerNames = this.buildTargetServerList();
 
 		this.torRouter = this.ns.hasTorRouter();
 	}
 
 	async manage()
 	{
-		this.updateHackingSoftwareInfo();
+		this.updateInfo();
 
 		this.updateTargetServerList();
 
@@ -63,6 +63,13 @@ export class AccessManager extends Manager
 		
 		await this.installBackdoorsOnServers();
 	}
+
+	updateInfo()
+	{
+		this.waitTime = 60000;
+
+		this.updateHackingSoftwareInfo();
+    }
 
 	updateHackingSoftwareInfo()
 	{
@@ -113,14 +120,46 @@ export class AccessManager extends Manager
 	updateTargetServerList()
 	{
 		if (!this.torRouter
-				&& this.ns.hasTorRouter())
+			&& this.ns.hasTorRouter())
 		{
 			this.torRouter = true;
 
 			this.rootAccessTargetServerNames = getAllServerNames(this.ns);
-			this.backdoorTargetServerNames = getAllServerNames(this.ns);
+			this.backdoorTargetServerNames = this.buildTargetServerList();
 		}
 	}
+
+	buildTargetServerList()
+	{
+		var allBackdoorTargetServerNames = getAllServerNames(this.ns);
+
+		var importantBackdoorTargetServerNames = this.getImportantBackdoorTargetServerNames();
+
+		for (var i = 0; i < importantBackdoorTargetServerNames.length; i++)
+		{
+			var serverName = importantBackdoorTargetServerNames[i];
+
+			var serverIndex = allBackdoorTargetServerNames.indexOf(serverName);
+
+			if (serverIndex != -1)
+			{
+				allBackdoorTargetServerNames.splice(
+					serverIndex,
+					1);
+            }
+		}
+
+		return [...importantBackdoorTargetServerNames, ...allBackdoorTargetServerNames];
+    }
+
+	getImportantBackdoorTargetServerNames()
+	{
+		return ['CSEC',
+				'avmnite-02h',
+				'I.I.I.I',
+				'run4theh111z',
+				'fulcrumassets']
+    }
 
 	async getRootAccesses()
 	{
@@ -216,20 +255,31 @@ export class AccessManager extends Manager
 
 	async installBackdoorsOnServers()
 	{
-		var targetServerNamesLeft = [];
-
 		for (var i = 0; i < this.backdoorTargetServerNames.length; i++)
 		{
 			var targetServerName = this.backdoorTargetServerNames[i];
 
-			if (!this.ns.getServer(targetServerName).backdoorInstalled
-					&& !await this.installBackdoorOnServer(targetServerName))
+			if (this.ns.getServer(targetServerName).backdoorInstalled)
 			{
-				targetServerNamesLeft.push(targetServerName);
-			}
-		}
+				this.backdoorTargetServerNames.splice(
+					i,
+					1);
 
-		this.backdoorTargetServerNames = targetServerNamesLeft;
+				i--;
+			}
+			else if (await this.installBackdoorOnServer(targetServerName))
+			{
+				this.backdoorTargetServerNames.splice(
+					i,
+					1);
+
+				i--;
+
+				this.waitTime = 1000;
+
+				break;
+            }
+		}
 	}
 
 	async installBackdoorOnServer(serverName: string)

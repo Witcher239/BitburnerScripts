@@ -25,25 +25,6 @@ export function getAllServerNames(
 	return allServerNames;
 }
 
-export function getPurchasedServerNames(ns: NS)
-{
-	var purchasedServerNames = [];
-
-	var connectedServerNames = ns.scan('home');
-
-	for (var i = 0; i < connectedServerNames.length; i++)
-	{
-		var connectedServerName = connectedServerNames[i];
-
-		if (connectedServerName.search('hack') != -1)
-		{
-			purchasedServerNames.push(connectedServerName);
-		}
-	}
-
-	return purchasedServerNames;
-}
-
 export async function executeOnRemoteServer(
 	ns: NS,
 	scriptName: string,
@@ -132,3 +113,26 @@ export function getServerFreeRAM(
 	
 	return freeRAM;
 }
+
+export function arrayMove(
+	array: any[],
+	oldIndex: number,
+	newIndex: number)
+{
+	if (newIndex >= array.length)
+	{
+		var counter = newIndex - array.length + 1;
+
+		while (counter--)
+		{
+			array.push(undefined);
+		}
+	}
+
+	array.splice(
+		newIndex,
+		0,
+		array.splice(
+			oldIndex,
+			1)[0]);
+};

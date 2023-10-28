@@ -2,8 +2,6 @@ import { NS } from '@ns';
 
 import { Manager } from "scripts/managers/Manager";
 
-import { getPurchasedServerNames } from "scripts/util/util";
-
 export async function main(ns: NS)
 {
 	var hardwareManager = new HardwareManager(ns);
@@ -20,9 +18,9 @@ export class HardwareManager extends Manager
 
 	torRouter = false;
 
-	serverNames: string[] = [];
+	purchasedServers: string[] = [];
 
-	upgradableServerNames: string[] = [];
+	upgradablePurchasedServers: string[] = [];
 
 	moneyForHomeServerUpgrades = 0;
 	moneyForTorRouter = 0;
@@ -77,33 +75,33 @@ export class HardwareManager extends Manager
 		this.moneyForServersPurchases = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForServersPurchases;
 		this.moneyForServersUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForServersUpgrades;
 
-		var serverNamesUpdated = false;
+		var newServersPurchased = false;
 
-		if (this.serverNames.length != 25)
+		if (this.purchasedServers.length != 25)
 		{
-			var numOfServerNames = this.serverNames.length;
+			var oldNumOfPurchasedServers = this.purchasedServers.length;
 
-			this.serverNames = getPurchasedServerNames(this.ns);
+			this.purchasedServers = this.ns.getPurchasedServers();
 
-			serverNamesUpdated = numOfServerNames != this.serverNames.length;
+			newServersPurchased = oldNumOfPurchasedServers != this.purchasedServers.length;
 		}
 
-		if (serverNamesUpdated
-			|| this.upgradableServerNames.length > 0)
+		if (newServersPurchased
+			|| this.upgradablePurchasedServers.length > 0)
 		{
-			var newUpgradableServerNames: string[] = [];
+			var newUpgradablePurchasedServers: string[] = [];
 
-			for (var i = 0; i < this.serverNames.length; i++)
+			for (var i = 0; i < this.purchasedServers.length; i++)
 			{
-				var serverName = this.serverNames[i];
+				var serverName = this.purchasedServers[i];
 
 				if (this.ns.getServerMaxRam(serverName) < this.ns.getPurchasedServerMaxRam())
 				{
-					newUpgradableServerNames.push(serverName);
+					newUpgradablePurchasedServers.push(serverName);
 				}
 			}
 
-			this.upgradableServerNames = newUpgradableServerNames;
+			this.upgradablePurchasedServers = newUpgradablePurchasedServers;
 		}
 
 		if (!this.torRouter
@@ -188,7 +186,7 @@ export class HardwareManager extends Manager
 
 	buyServers()
 	{
-		while (this.serverNames.length != 25
+		while (this.purchasedServers.length != 25
 			   && this.newServerCost < this.moneyForServersPurchases)
 		{
 			var newServerName = this.generateServerName();
@@ -197,9 +195,9 @@ export class HardwareManager extends Manager
 				newServerName,
 				2);
 
-			this.serverNames.push(newServerName);
+			this.purchasedServers.push(newServerName);
 
-			this.upgradableServerNames.push(newServerName);
+			this.upgradablePurchasedServers.push(newServerName);
 
 			this.moneyForServersPurchases -= this.newServerCost;
 
@@ -241,9 +239,9 @@ export class HardwareManager extends Manager
 
 	upgradeServers()
 	{
-		for (var i = 0; i < this.upgradableServerNames.length; i++)
+		for (var i = 0; i < this.upgradablePurchasedServers.length; i++)
 		{
-			this.upgradeServer(this.upgradableServerNames[i]);
+			this.upgradeServer(this.upgradablePurchasedServers[i]);
 		}
 	}
 
@@ -286,7 +284,7 @@ export class HardwareManager extends Manager
 	shouldStopOperation()
 	{
 		return this.torRouter
-			&& this.serverNames.length == 25
-			&& this.upgradableServerNames.length == 0;
+			&& this.purchasedServers.length == 25
+			&& this.upgradablePurchasedServers.length == 0;
 	}
 }

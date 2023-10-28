@@ -104,6 +104,11 @@ export class DeploymentManager extends Manager
 				await this.deployHackingManager(serverName);
 			}
 		}
+
+		if (this.canDeployShareManager())
+		{
+			this.deployShareManager();
+        }
 	}
 
 	canDeployAccessManager()
@@ -277,6 +282,25 @@ export class DeploymentManager extends Manager
 				this.ns.getHostname(),
 				1,
 				[targetServerName]);
+		}
+	}
+
+	canDeployShareManager()
+	{
+		return this.ns.getServerMaxRam(this.ns.getHostname()) >= 1024;
+	}
+
+	async deployShareManager()
+	{
+		if (!this.ns.isRunning(
+			'/scripts/managers/ShareManager.js',
+			this.ns.getHostname()))
+		{
+			await executeOnRemoteServer(
+				this.ns,
+				'/scripts/managers/ShareManager.js',
+				this.ns.getHostname(),
+				1);
 		}
 	}
 }
