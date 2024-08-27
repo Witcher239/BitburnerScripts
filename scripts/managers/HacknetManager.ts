@@ -59,7 +59,7 @@ export class HacknetManager extends Manager
 	{
 		this.waitTime = 60000;
 
-		this.moneyForHacknetUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForHacknetUpgrades;
+		this.moneyForHacknetUpgrades = this.ns.getPlayer().money * this.fractionOfMoneyForHacknetUpgrades;
 	}
 
 	upgradeExistingHacknetNodes()

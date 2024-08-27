@@ -70,10 +70,10 @@ export class HardwareManager extends Manager
 	{
 		this.waitTime = 60000;
 
-		this.moneyForHomeServerUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForHomeServerUpgrades;
-		this.moneyForTorRouter = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForTorRouter;
-		this.moneyForServersPurchases = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForServersPurchases;
-		this.moneyForServersUpgrades = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForServersUpgrades;
+		this.moneyForHomeServerUpgrades = this.ns.getPlayer().money * this.fractionOfMoneyForHomeServerUpgrades;
+		this.moneyForTorRouter = this.ns.getPlayer().money * this.fractionOfMoneyForTorRouter;
+		this.moneyForServersPurchases = this.ns.getPlayer().money * this.fractionOfMoneyForServersPurchases;
+		this.moneyForServersUpgrades = this.ns.getPlayer().money * this.fractionOfMoneyForServersUpgrades;
 
 		var newServersPurchased = false;
 

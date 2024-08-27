@@ -78,8 +78,8 @@ export class GangManager extends Manager
 	{
 		this.waitTime = 60000;
 
-		this.moneyForAugmentationsPurchase = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForAugmentationsPurchase;
-		this.moneyForEquipmentPurchase = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForEquipmentPurchase;
+		this.moneyForAugmentationsPurchase = this.ns.getPlayer().money * this.fractionOfMoneyForAugmentationsPurchase;
+		this.moneyForEquipmentPurchase = this.ns.getPlayer().money * this.fractionOfMoneyForEquipmentPurchase;
 	}
 
 	recruitMembers()

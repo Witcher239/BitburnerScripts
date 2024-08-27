@@ -95,6 +95,16 @@ export class DeploymentManager extends Manager
 			await this.deployGangManager();
 		}
 
+		if (this.canDeployShareManager())
+		{
+			this.deployShareManager();
+		}
+
+		if (this.canDeployAugmentationManager())
+		{
+			this.deployAugmentationManager();
+		}
+
 		for (var i = 0; i < this.serverNames.length; i++)
 		{
 			var serverName = this.serverNames[i];
@@ -104,11 +114,6 @@ export class DeploymentManager extends Manager
 				await this.deployHackingManager(serverName);
 			}
 		}
-
-		if (this.canDeployShareManager())
-		{
-			this.deployShareManager();
-        }
 	}
 
 	canDeployAccessManager()
@@ -299,6 +304,25 @@ export class DeploymentManager extends Manager
 			await executeOnRemoteServer(
 				this.ns,
 				'/scripts/managers/ShareManager.js',
+				this.ns.getHostname(),
+				1);
+		}
+	}
+
+	canDeployAugmentationManager()
+	{
+		return this.ns.getServerMaxRam(this.ns.getHostname()) >= 256;
+	}
+
+	async deployAugmentationManager()
+	{
+		if (!this.ns.isRunning(
+			'/scripts/managers/AugmentationManager.js',
+			this.ns.getHostname()))
+		{
+			await executeOnRemoteServer(
+				this.ns,
+				'/scripts/managers/AugmentationManager.js',
 				this.ns.getHostname(),
 				1);
 		}

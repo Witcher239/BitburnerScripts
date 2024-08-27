@@ -22,10 +22,10 @@ export class HackingManager extends Manager
 	targetServerName = '';
 
 	minSecurityLevel = 0;
-	acceptableSecurityLevelDifference = 0;
+	acceptableSecurityLevelDifferencePercentage = 5;
 
 	maxMoney = 0;
-	acceptableMoneyLevelPercentage = 100;
+	acceptableMoneyDifferencePercentage = 5;
 
 	constructor(
 		ns: NS,
@@ -63,7 +63,7 @@ export class HackingManager extends Manager
 	{
 		var couldRunOperation = false;
 
-		if (this.ns.getServerSecurityLevel(this.targetServerName) > this.minSecurityLevel + this.acceptableSecurityLevelDifference)
+		if (this.ns.getServerSecurityLevel(this.targetServerName) > this.minSecurityLevel * ((100 + this.acceptableSecurityLevelDifferencePercentage) / 100))
 		{
 			var weakenController = new WeakenController(
 				this.ns,
@@ -71,7 +71,7 @@ export class HackingManager extends Manager
 
 			couldRunOperation = await weakenController.startOperation();
 		}
-		else if (this.ns.getServerMoneyAvailable(this.targetServerName) < this.maxMoney * (this.acceptableMoneyLevelPercentage / 100))
+		else if (this.ns.getServerMoneyAvailable(this.targetServerName) < this.maxMoney * ((100 - this.acceptableMoneyDifferencePercentage) / 100))
 		{
 			var growController = new GrowController(
 				this.ns,

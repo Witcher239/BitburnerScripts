@@ -46,7 +46,7 @@ export class SoftwareManager extends Manager
 
 	updateInfo()
 	{
-		this.moneyForSoftwarePurchases = this.ns.getServerMoneyAvailable('home') * this.fractionOfMoneyForSoftwarePurchases;
+		this.moneyForSoftwarePurchases = this.ns.getPlayer().money * this.fractionOfMoneyForSoftwarePurchases;
 
 		this.updateRemainingDarkwebProgramsList();
 	}
