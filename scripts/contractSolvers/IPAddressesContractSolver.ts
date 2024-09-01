@@ -1,35 +1,43 @@
-export class IPAddressesContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class IPAddressesContractSolver extends ContractSolver
 {
 	inputExpression = '';
 
 	ipAddresses: string[] = [];
 
-	constructor(inputExpression: string)
+	constructor(
+		ns: NS,
+		inputExpression: string)
 	{
+		super(ns);
+
 		this.inputExpression = inputExpression;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.buildIPAddresses();
-
-		return this.buildOutputExpression();
+		await this.buildIPAddresses();
 	}
 
-	buildIPAddresses()
+	async buildIPAddresses()
 	{
 		if (this.inputExpression.length >= 4
 			&& this.inputExpression.length <= 12)
 		{
-			this.recursiveBuildSegments();
+			await this.recursiveBuildSegments();
 		}
 	}
 
-	recursiveBuildSegments(
+	async recursiveBuildSegments(
 		segmentNum = 1,
 		inputExpression = this.inputExpression,
 		unfinishedIPAddress = '')
 	{
+		await this.ns.sleep(1);
+
 		if (segmentNum == 4)
 		{
 			if (this.validateSegment(inputExpression))
@@ -39,9 +47,9 @@ export class IPAddressesContractSolver
 		}
 		else
 		{
-			for (var i = 1; i < 4; i++)
+			for (let i = 1; i < 4; i++)
 			{
-				var segment = inputExpression.substr(
+				let segment = inputExpression.substr(
 					0,
 					i);
 
@@ -50,7 +58,7 @@ export class IPAddressesContractSolver
 					break;
 				}
 
-				this.recursiveBuildSegments(
+				await this.recursiveBuildSegments(
 					segmentNum + 1,
 					inputExpression.substr(
 						i,
@@ -62,7 +70,7 @@ export class IPAddressesContractSolver
 
 	validateSegment(segment: string)
 	{
-		var ret = segment != '';
+		let ret = segment != '';
 
 		if (ret
 			&& segment.length > 1)
@@ -77,15 +85,15 @@ export class IPAddressesContractSolver
 		return ret;
 	}
 
-	buildOutputExpression()
+	buildResult()
 	{
-		var outputExpression = '[';
+		let outputExpression = '[';
 
-		var firstIPAddress = true;
+		let firstIPAddress = true;
 
-		for (var i = 0; i < this.ipAddresses.length; i++)
+		for (let i = 0; i < this.ipAddresses.length; i++)
 		{
-			var ipAddress = this.ipAddresses[i];
+			let ipAddress = this.ipAddresses[i];
 
 			if (!firstIPAddress)
 			{

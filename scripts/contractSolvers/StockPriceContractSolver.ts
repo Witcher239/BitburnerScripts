@@ -1,4 +1,8 @@
-export class StockPriceContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class StockPriceContractSolver extends ContractSolver
 {
 	numOfTransactions = 0;
 
@@ -7,40 +11,41 @@ export class StockPriceContractSolver
 	maxProfit = 0;
 
 	constructor(
+		ns: NS,
 		numOfTransactions: number,
 		prices: number[])
 	{
+		super(ns);
+
 		this.numOfTransactions = numOfTransactions;
 		
 		this.prices = prices;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.searchMaxProfit();
-
-		return this.maxProfit;
+		await this.searchMaxProfit();
 	}
 
-	searchMaxProfit()
+	async searchMaxProfit()
 	{
-		var maxNumOfPricesPairs = Math.floor(this.prices.length / 2);
+		let maxNumOfPricesPairs = Math.floor(this.prices.length / 2);
 
-		var maxNumOfPieces = Math.min(
+		let maxNumOfPieces = Math.min(
 			this.numOfTransactions,
 			maxNumOfPricesPairs);
 
-		for (var i = 1; i <= maxNumOfPieces; i++)
+		for (let i = 1; i <= maxNumOfPieces; i++)
 		{
-			this.searchMaxProfitInSpecifiedNumOfPieces(i);
+			await this.searchMaxProfitInSpecifiedNumOfPieces(i);
 		}
 	}
 
-	searchMaxProfitInSpecifiedNumOfPieces(numOfPieces: number)
+	async searchMaxProfitInSpecifiedNumOfPieces(numOfPieces: number)
 	{
 		if (this.canSearchMaxProfitInSpecifiedNumOfPieces(numOfPieces))
 		{
-			this.doRecursiveMaxProfitSearch(
+			await this.recursiveMaxProfitSearch(
 				numOfPieces,
 				1,
 				0,
@@ -53,15 +58,17 @@ export class StockPriceContractSolver
 		return this.prices.length / 2 >= numOfPieces;
 	}
 
-	doRecursiveMaxProfitSearch(
+	async recursiveMaxProfitSearch(
 		numOfPieces: number,
 		currentPieceNum: number,
 		startIndex: number,
 		previousProfit: number)
 	{
+		await this.ns.sleep(1);
+
 		if (currentPieceNum == numOfPieces)
 		{
-			var profit = previousProfit;
+			let profit = previousProfit;
 
 			profit += this.maxProfitInPriceSegment(
 				this.prices.slice(
@@ -75,16 +82,16 @@ export class StockPriceContractSolver
 		}
 		else
 		{
-			for (var i = startIndex + 1; i < (this.prices.length - 2 * (numOfPieces - currentPieceNum)); i++)
+			for (let i = startIndex + 1; i < (this.prices.length - 2 * (numOfPieces - currentPieceNum)); i++)
 			{
-				var profit = previousProfit;
+				let profit = previousProfit;
 
 				profit += this.maxProfitInPriceSegment(
 					this.prices.slice(
 						startIndex,
 						i + 1));
 
-				this.doRecursiveMaxProfitSearch(
+				await this.recursiveMaxProfitSearch(
 					numOfPieces,
 					currentPieceNum + 1,
 					i + 1,
@@ -95,17 +102,17 @@ export class StockPriceContractSolver
 
 	maxProfitInPriceSegment(pricesSegment: number[])
 	{
-		var maxProfit = 0;
+		let maxProfit = 0;
 
-		for (var i = 0; i < pricesSegment.length; i++)
+		for (let i = 0; i < pricesSegment.length; i++)
 		{
-			var purchPrice = pricesSegment[i];
+			let purchPrice = pricesSegment[i];
 
-			for (var j = i + 1; j < pricesSegment.length; j++)
+			for (let j = i + 1; j < pricesSegment.length; j++)
 			{
-				var salesPrice = pricesSegment[j];
+				let salesPrice = pricesSegment[j];
 
-				var profit = salesPrice - purchPrice;
+				let profit = salesPrice - purchPrice;
 
 				if (profit > maxProfit)
 				{
@@ -116,4 +123,9 @@ export class StockPriceContractSolver
 
 		return maxProfit;
 	}
+
+	buildResult()
+	{
+		return this.maxProfit.toString();
+    }
 }

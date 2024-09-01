@@ -1,30 +1,38 @@
-export class LZDecompressionContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class LZDecompressionContractSolver extends ContractSolver
 {
 	inputExpression = '';
 
 	outputExpression = '';
 
-	constructor(inputExpression: string)
+	constructor(
+		ns: NS,
+		inputExpression: string)
 	{
+		super(ns);
+
 		this.inputExpression = inputExpression;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.recursiveBuildOutputExpression();
-
-		return this.outputExpression;
+		await this.recursiveBuildOutputExpression();
 	}
 
-	recursiveBuildOutputExpression(
+	async recursiveBuildOutputExpression(
 		inputExpression = this.inputExpression,
 		isDirectChunk = true)
 	{
+		await this.ns.sleep(1);
+
 		if (inputExpression != '')
 		{
-			var chunkSize = 1;
+			let chunkSize = 1;
 
-			var length = parseInt(
+			let length = parseInt(
 				inputExpression.substr(
 					0,
 					1));
@@ -49,7 +57,7 @@ export class LZDecompressionContractSolver
 				}
 			}
 
-			this.recursiveBuildOutputExpression(
+			await this.recursiveBuildOutputExpression(
 				inputExpression.substr(
 					chunkSize,
 					inputExpression.length - chunkSize),
@@ -70,16 +78,21 @@ export class LZDecompressionContractSolver
 		inputExpression: string,
 		length: number)
 	{
-		var numOfPlacesBefore = parseInt(
+		let numOfPlacesBefore = parseInt(
 			inputExpression.substr(
 				1,
 				1));
 
-		for (var i = 0; i < length; i++)
+		for (let i = 0; i < length; i++)
 		{
 			this.outputExpression += this.outputExpression.substr(
 				this.outputExpression.length - numOfPlacesBefore,
 				1);
 		}
 	}
+
+	buildResult()
+	{
+		return this.outputExpression;
+    }
 }

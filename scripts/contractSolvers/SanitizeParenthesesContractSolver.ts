@@ -1,4 +1,8 @@
-export class SanitizeParenthesesContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class SanitizeParenthesesContractSolver extends ContractSolver
 {
 	inputExpression = "";
 
@@ -6,26 +10,25 @@ export class SanitizeParenthesesContractSolver
 
 	minNumOfDeletes = 0;
 
-	constructor(inputExpression: string)
+	constructor(
+		ns: NS,
+		inputExpression: string)
 	{
+		super(ns);
+
 		this.inputExpression = inputExpression;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.searchOutputExpressions();
-
-		return this.outputExpressionsString();
+		await this.recursiveOutputExpressionsSearch(this.inputExpression);
 	}
 
-	searchOutputExpressions()
+	async recursiveOutputExpressionsSearch(expression: string)
 	{
-		this.doRecursiveOutputExpressionsSearch(this.inputExpression);
-	}
+		await this.ns.sleep(1);
 
-	doRecursiveOutputExpressionsSearch(expression: string)
-	{
-		var numOfDeletes = this.deletesAmount(expression);
+		let numOfDeletes = this.deletesAmount(expression);
 
 		if (numOfDeletes <= this.minNumOfDeletes
 			|| this.outputExpressions.length == 0)
@@ -48,14 +51,14 @@ export class SanitizeParenthesesContractSolver
 			}
 			else
 			{
-				for (var i = 0; i < expression.length; i++)
+				for (let i = 0; i < expression.length; i++)
 				{
-					var charachter = expression[i];
+					let charachter = expression[i];
 
 					if (charachter == '('
 						|| charachter == ')')
 					{
-						this.doRecursiveOutputExpressionsSearch(
+						await this.recursiveOutputExpressionsSearch(
 							this.removeCharacter(
 								expression,
 								i));
@@ -72,13 +75,13 @@ export class SanitizeParenthesesContractSolver
 
 	validateParentheses(expression: string)
 	{
-		var ret = true;
+		let ret = true;
 
-		var openParentheses = 0;
+		let openParentheses = 0;
 
-		for (var i = 0; i < expression.length; i++)
+		for (let i = 0; i < expression.length; i++)
 		{
-			var character = expression[i];
+			let character = expression[i];
 
 			if (character == '(')
 			{
@@ -111,7 +114,7 @@ export class SanitizeParenthesesContractSolver
 		expression: string,
 		characterIndex: number)
 	{
-		var ret = expression.substring(
+		let ret = expression.substring(
 			0,
 			characterIndex);
 
@@ -125,15 +128,15 @@ export class SanitizeParenthesesContractSolver
 		return ret;
 	}
 
-	outputExpressionsString()
+	buildResult()
 	{
-		var ret = '[';
+		let ret = '[';
 
 		if (this.outputExpressions.length > 0)
 		{
-			var firstExpression = true;
+			let firstExpression = true;
 
-			for (var i = 0; i < this.outputExpressions.length; i++)
+			for (let i = 0; i < this.outputExpressions.length; i++)
 			{
 				if (firstExpression)
 				{
@@ -155,5 +158,5 @@ export class SanitizeParenthesesContractSolver
 		ret += ']';
 
 		return ret;
-	}
+    }
 }

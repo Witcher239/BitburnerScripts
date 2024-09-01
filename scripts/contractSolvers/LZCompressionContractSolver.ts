@@ -1,59 +1,67 @@
-export class LZCompressionContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class LZCompressionContractSolver extends ContractSolver
 {
 	inputExpression = '';
 
 	outputExpression = '';
 
-	constructor(inputExpression: string)
+	constructor(
+		ns: NS,
+		inputExpression: string)
 	{
+		super(ns);
+
 		this.inputExpression = inputExpression;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.recursiveEncodeDirect();
-
-		return this.outputExpression;
+		await this.recursiveEncodeDirect();
 	}
 
-	recursiveEncodeDirect(
+	async recursiveEncodeDirect(
 		startingIndex = 0,
 		outputExpression = '',
 		canSkipChunk = false)
 	{
+		await this.ns.sleep(1);
+
 		if (!this.tryToSaveEncoding(
 				startingIndex,
 				outputExpression))
 		{
-			var bestEncodingLengthFound = 0;
+			let bestEncodingLengthFound = 0;
 
-			var bestEncodedLengthFound = 0;
+			let bestEncodedLengthFound = 0;
 
-			var bestOutputExpression = '';
+			let bestOutputExpression = '';
 
-			var canSkipNextChunk = true;
+			let canSkipNextChunk = true;
 
-			var minChunkLength = canSkipChunk ?
+			let minChunkLength = canSkipChunk ?
 				0 :
 				1;
 
-			var maxChunkLength = Math.min(
+			let maxChunkLength = Math.min(
 				9,
 				this.inputExpression.length - startingIndex);
 
-			for (var i = minChunkLength; i <= maxChunkLength; i++)
+			for (let i = minChunkLength; i <= maxChunkLength; i++)
 			{
-				var directOutputExpression = '' + i;
+				let directOutputExpression = '' + i;
 
-				var textToEncode = this.inputExpression.substr(
+				let textToEncode = this.inputExpression.substr(
 					startingIndex,
 					i);
 
 				directOutputExpression += textToEncode;
 
-				var encodingLength = directOutputExpression.length;
-				var encodedLength = i;
-				var newOutputExpression = directOutputExpression;
+				let encodingLength = directOutputExpression.length;
+				let encodedLength = i;
+				let newOutputExpression = directOutputExpression;
 
 				if (this.tryToSaveEncoding(
 						startingIndex + i,
@@ -73,14 +81,14 @@ export class LZCompressionContractSolver
 				}
 				else
 				{
-					var referenceLengthString = '';
-					var referenceOutputExpression = '';
+					let referenceLengthString = '';
+					let referenceOutputExpression = '';
 
 					[referenceLengthString, referenceOutputExpression] = this.encodeReference(
 						startingIndex + i,
 						i != 0);
 
-					var referenceLength = parseInt(referenceLengthString);
+					let referenceLength = parseInt(referenceLengthString);
 
 					encodingLength += referenceOutputExpression.length;
 					encodedLength += referenceLength;
@@ -101,7 +109,7 @@ export class LZCompressionContractSolver
 				}
 			}
 
-			this.recursiveEncodeDirect(
+			await this.recursiveEncodeDirect(
 				startingIndex + bestEncodedLengthFound,
 				outputExpression + bestOutputExpression,
 				canSkipNextChunk);
@@ -112,7 +120,7 @@ export class LZCompressionContractSolver
 		startingIndex: number,
 		outputExpression: string)
 	{
-		var ret = false;
+		let ret = false;
 
 		if (startingIndex == this.inputExpression.length
 			&& outputExpression != '')
@@ -133,18 +141,18 @@ export class LZCompressionContractSolver
 		startingIndex = 0,
 		canSkipChunk = false)
 	{
-		var bestLengthFound = 0;
-		var referenceExpression = '';
+		let bestLengthFound = 0;
+		let referenceExpression = '';
 
-		var minChunkLength = canSkipChunk ?
+		let minChunkLength = canSkipChunk ?
 			0 :
 			1;
 
-		var maxChunkLength = Math.min(
+		let maxChunkLength = Math.min(
 			9,
 			this.inputExpression.length - startingIndex);
 
-		for (var i = maxChunkLength; i >= minChunkLength; i--)
+		for (let i = maxChunkLength; i >= minChunkLength; i--)
 		{
 			referenceExpression = '' + i;
 
@@ -154,19 +162,19 @@ export class LZCompressionContractSolver
 			}
 			else
 			{
-				var positionsBackFound = 0;
+				let positionsBackFound = 0;
 
-				var textToEncode = this.inputExpression.substr(
+				let textToEncode = this.inputExpression.substr(
 					startingIndex,
 					i);
 
-				var maxPositionsBack = Math.min(
+				let maxPositionsBack = Math.min(
 					9,
 					startingIndex);
 
-				for (var j = 1; j <= maxPositionsBack; j++)
+				for (let j = 1; j <= maxPositionsBack; j++)
 				{
-					var referenceText = this.inputExpression.substr(
+					let referenceText = this.inputExpression.substr(
 						startingIndex - j,
 						i);
 
@@ -191,4 +199,9 @@ export class LZCompressionContractSolver
 
 		return [bestLengthFound.toString(), referenceExpression]
 	}
+
+	buildResult()
+	{
+		return this.outputExpression;
+    }
 }

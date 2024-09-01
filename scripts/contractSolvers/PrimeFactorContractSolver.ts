@@ -1,43 +1,51 @@
-export class PrimeFactorContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class PrimeFactorContractSolver extends ContractSolver
 {
 	inputNumber = 0;
 
 	primeFactors: number[] = [];
 
-	constructor(inputNumber: number)
+	constructor(
+		ns: NS,
+		inputNumber: number)
 	{
+		super(ns);
+
 		this.inputNumber = inputNumber;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.doRecursivePrimeFactorsSearch(this.inputNumber);
-
-		return this.largestPrimeFactor();
+		await this.doRecursivePrimeFactorsSearch(this.inputNumber);
 	}
 
-	doRecursivePrimeFactorsSearch(number: number)
+	async doRecursivePrimeFactorsSearch(number: number)
 	{
-		for (var i = 2; i <= number; i++)
+		await this.ns.sleep(1);
+
+		for (let i = 2; i <= number; i++)
 		{
 			if (number % i == 0)
 			{
 				this.primeFactors.push(i);
 
-				this.doRecursivePrimeFactorsSearch(number / i);
+				await this.doRecursivePrimeFactorsSearch(number / i);
 
 				break;
 			}
 		}
 	}
 
-	largestPrimeFactor()
+	buildResult()
 	{
-		var largestPrimeFactor = 0;
+		let largestPrimeFactor = 0;
 
-		for (var i = 0; i < this.primeFactors.length; i++)
+		for (let i = 0; i < this.primeFactors.length; i++)
 		{
-			var primeFactor = this.primeFactors[i];
+			let primeFactor = this.primeFactors[i];
 
 			if (primeFactor > largestPrimeFactor)
 			{
@@ -45,6 +53,6 @@ export class PrimeFactorContractSolver
 			}
 		}
 
-		return largestPrimeFactor;
-	}
+		return largestPrimeFactor.toString();
+    }
 }

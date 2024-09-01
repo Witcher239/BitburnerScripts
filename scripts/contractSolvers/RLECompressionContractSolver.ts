@@ -1,29 +1,35 @@
-export class RLECompressionContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class RLECompressionContractSolver extends ContractSolver
 {
 	inputExpression = '';
 
 	outputExpression = '';
 
-	constructor(inputExpression: string)
+	constructor(
+		ns: NS,
+		inputExpression: string)
 	{
+		super(ns);
+
 		this.inputExpression = inputExpression;
 	}
 
-	solve()
+	async calculate()
 	{
 		this.buildOutputExpression();
-
-		return this.outputExpression;
 	}
 
 	buildOutputExpression()
 	{
-		var lastCharacter = '';
-		var numOfLastCharacters = 0;
+		let lastCharacter = '';
+		let numOfLastCharacters = 0;
 
-		for (var i = 0; i < this.inputExpression.length; i++)
+		for (let i = 0; i < this.inputExpression.length; i++)
 		{
-			var character = this.inputExpression[i];
+			let character = this.inputExpression[i];
 
 			if (character == lastCharacter
 				&& numOfLastCharacters < 9)
@@ -49,4 +55,9 @@ export class RLECompressionContractSolver
 			this.outputExpression += '' + numOfLastCharacters + lastCharacter;
 		}
 	}
+
+	buildResult()
+	{
+		return this.outputExpression;
+    }
 }

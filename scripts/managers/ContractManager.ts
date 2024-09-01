@@ -2,6 +2,7 @@ import { NS } from '@ns';
 
 import { Manager } from "scripts/managers/Manager";
 
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
 import { StockPriceContractSolver } from "scripts/contractSolvers/StockPriceContractSolver";
 import { SanitizeParenthesesContractSolver } from "scripts/contractSolvers/SanitizeParenthesesContractSolver";
 import { PrimeFactorContractSolver } from "scripts/contractSolvers/PrimeFactorContractSolver";
@@ -16,7 +17,7 @@ import { getAllServerNames } from "scripts/util/util";
 
 export async function main(ns: NS)
 {
-	var contractManager = new ContractManager(ns);
+	let contractManager = new ContractManager(ns);
 
 	await contractManager.startOperation();
 }
@@ -24,8 +25,6 @@ export async function main(ns: NS)
 export class ContractManager extends Manager
 {
 	serverNames: string[] = [];
-
-	sendResults = true;
 
 	constructor(ns: NS)
 	{
@@ -38,6 +37,7 @@ export class ContractManager extends Manager
 		this.ns.disableLog('ls');
 		this.ns.disableLog('codingcontract.getContractType');
 		this.ns.disableLog('codingcontract.getData');
+		this.ns.disableLog('sleep');
 	}
 
 	init()
@@ -47,49 +47,54 @@ export class ContractManager extends Manager
 
 	async manage()
 	{
-		for (var i = 0; i < this.serverNames.length; i++)
-		{
-			var serverName = this.serverNames[i];
-
-			this.solveContractsFromServer(serverName);
-		}
+		await this.solveContracts();
 	}
 
-	solveContractsFromServer(serverName: string)
+	async solveContracts()
 	{
-		var contractNames = this.ns.ls(
+		for (let i = 0; i < this.serverNames.length; i++)
+		{
+			let serverName = this.serverNames[i];
+
+			await this.solveContractsFromServer(serverName);
+		}
+    }
+
+	async solveContractsFromServer(serverName: string)
+	{
+		let contractNames = this.ns.ls(
 			serverName,
 			'.cct');
 
-		for (var j = 0; j < contractNames.length; j++)
+		for (let j = 0; j < contractNames.length; j++)
 		{
-			var contractName = contractNames[j];
+			let contractName = contractNames[j];
 
-			this.solveContract(
+			await this.solveContract(
 				serverName,
 				contractName);
 		}
 	}
 
-	solveContract(
+	async solveContract(
 		serverName: string,
 		contractName: string)
 	{
-		var contractType = this.ns.codingcontract.getContractType(
+		let contractType = this.ns.codingcontract.getContractType(
 			contractName,
 			serverName);
 
-		var contractData = this.ns.codingcontract.getData(
+		let contractData = this.ns.codingcontract.getData(
 			contractName,
 			serverName);
 
-		var contractSolver = this.getContractSolver(
+		let contractSolver = this.getContractSolver(
 			contractType,
 			contractData);
 
-		if (contractSolver != null)
+		if (contractSolver)
 		{
-			var result = contractSolver.solve();
+			let result = await contractSolver.solve();
 
 			this.ns.print(
 				'Result of the contract "'
@@ -101,13 +106,10 @@ export class ContractManager extends Manager
 				+ '" is: '
 				+ result);
 
-			if (this.sendResults)
-			{
-				this.ns.codingcontract.attempt(
-					result,
-					contractName,
-					serverName);
-			}
+			this.ns.codingcontract.attempt(
+				result,
+				contractName,
+				serverName);
 		}
 	}
 
@@ -115,9 +117,7 @@ export class ContractManager extends Manager
 		contractType: string,
 		contractData: any)
 	{
-		this.sendResults = true;
-
-		var contractSolver;
+		let contractSolver: ContractSolver | undefined;
 
 		switch (contractType)
 		{
@@ -126,6 +126,7 @@ export class ContractManager extends Manager
 				var prices = contractData;
 
 				contractSolver = new StockPriceContractSolver(
+					this.ns,
 					1,
 					prices);
 
@@ -136,6 +137,7 @@ export class ContractManager extends Manager
 				var prices = contractData;
 
 				contractSolver = new StockPriceContractSolver(
+					this.ns,
 					Math.floor(prices.length / 2),
 					prices);
 					
@@ -146,6 +148,7 @@ export class ContractManager extends Manager
 				var prices = contractData;
 
 				contractSolver = new StockPriceContractSolver(
+					this.ns,
 					2,
 					prices);
 					
@@ -157,6 +160,7 @@ export class ContractManager extends Manager
 				var prices = contractData[1];
 
 				contractSolver = new StockPriceContractSolver(
+					this.ns,
 					numOfTransactions,
 					prices);
 					
@@ -166,7 +170,9 @@ export class ContractManager extends Manager
 
 				var inputExpression = contractData;
 
-				contractSolver = new SanitizeParenthesesContractSolver(inputExpression);
+				contractSolver = new SanitizeParenthesesContractSolver(
+					this.ns,
+					inputExpression);
 
 				break;
 
@@ -174,7 +180,9 @@ export class ContractManager extends Manager
 
 				var inputNumber = contractData;
 
-				contractSolver = new PrimeFactorContractSolver(inputNumber);
+				contractSolver = new PrimeFactorContractSolver(
+					this.ns,
+					inputNumber);
 
 				break;
 
@@ -182,7 +190,9 @@ export class ContractManager extends Manager
 
 				var numbers = contractData;
 
-				contractSolver = new MaxSumContractSolver(numbers);
+				contractSolver = new MaxSumContractSolver(
+					this.ns,
+					numbers);
 
 				break;
 
@@ -190,7 +200,9 @@ export class ContractManager extends Manager
 
 				var inputExpression = contractData;
 
-				contractSolver = new RLECompressionContractSolver(inputExpression);
+				contractSolver = new RLECompressionContractSolver(
+					this.ns,
+					inputExpression);
 
 				break;
 
@@ -198,7 +210,9 @@ export class ContractManager extends Manager
 
 				var inputExpression = contractData;
 
-				contractSolver = new LZDecompressionContractSolver(inputExpression);
+				contractSolver = new LZDecompressionContractSolver(
+					this.ns,
+					inputExpression);
 
 				break;
 
@@ -206,7 +220,9 @@ export class ContractManager extends Manager
 
 				var inputExpression = contractData;
 
-				contractSolver = new LZCompressionContractSolver(inputExpression);
+				contractSolver = new LZCompressionContractSolver(
+					this.ns,
+					inputExpression);
 
 				break;
 
@@ -214,7 +230,9 @@ export class ContractManager extends Manager
 
 				var inputExpression = contractData;
 
-				contractSolver = new IPAddressesContractSolver(inputExpression);
+				contractSolver = new IPAddressesContractSolver(
+					this.ns,
+					inputExpression);
 
 				break;
 
@@ -223,6 +241,7 @@ export class ContractManager extends Manager
 				var jumpLengths = contractData;
 
 				contractSolver = new ArrayJumpingContractSolver(
+					this.ns,
 					jumpLengths,
 					false);
 
@@ -233,6 +252,7 @@ export class ContractManager extends Manager
 				var jumpLengths = contractData;
 
 				contractSolver = new ArrayJumpingContractSolver(
+					this.ns,
 					jumpLengths,
 					true);
 

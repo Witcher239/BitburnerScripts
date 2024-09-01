@@ -1,4 +1,8 @@
-export class ArrayJumpingContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class ArrayJumpingContractSolver extends ContractSolver
 {
 	jumpLengths: number[] = [];
 
@@ -7,25 +11,28 @@ export class ArrayJumpingContractSolver
 	minJumpsRequired = 0;
 
 	constructor(
+		ns: NS,
 		jumpLengths: number[],
 		returnMinJumpsRequired: boolean)
 	{
+		super(ns);
+
 		this.jumpLengths = jumpLengths;
 
 		this.returnMinJumpsRequired = returnMinJumpsRequired;
 	}
 
-	solve()
+	async calculate()
 	{
-		this.recursiveTryToReachTheEnd();
-
-		return this.buildOutputExpression();
+		await this.recursiveTryToReachTheEnd();
 	}
 
-	recursiveTryToReachTheEnd(
+	async recursiveTryToReachTheEnd(
 		startingPositionIndex = 0,
 		currentJumpNum = 1)
 	{
+		await this.ns.sleep(1);
+
 		if (this.canReachTheEndFromPosition(startingPositionIndex))
 		{
 			if (this.minJumpsRequired == 0
@@ -36,9 +43,9 @@ export class ArrayJumpingContractSolver
 		}
 		else
 		{
-			for (var i = 1; i <= this.jumpLengths[startingPositionIndex]; i++)
+			for (let i = 1; i <= this.jumpLengths[startingPositionIndex]; i++)
 			{
-				this.recursiveTryToReachTheEnd(
+				await this.recursiveTryToReachTheEnd(
 					startingPositionIndex + i,
 					currentJumpNum + 1);
 			}
@@ -50,12 +57,12 @@ export class ArrayJumpingContractSolver
 		return positionIndex + this.jumpLengths[positionIndex] >= this.jumpLengths.length - 1;
 	}
 
-	buildOutputExpression()
+	buildResult()
 	{
-		return this.returnMinJumpsRequired ?
+		return (this.returnMinJumpsRequired ?
 			this.minJumpsRequired :
 			Math.min(
 				this.minJumpsRequired,
-				1);
+				1)).toString();
 	}
 }

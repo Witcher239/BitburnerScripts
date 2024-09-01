@@ -1,24 +1,30 @@
-export class MaxSumContractSolver
+import { NS } from '@ns';
+
+import { ContractSolver } from "scripts/contractSolvers/ContractSolver";
+
+export class MaxSumContractSolver extends ContractSolver
 {
 	numbers: number[] = [];
 
 	maxSum = 0;
 
-	constructor(numbers: number[])
+	constructor(
+		ns: NS,
+		numbers: number[])
 	{
+		super(ns);
+
 		this.numbers = numbers;
 	}
 
-	solve()
+	async calculate()
 	{
 		this.searchMaxSum();
-
-		return this.maxSum;
 	}
 
 	searchMaxSum()
 	{
-		for (var i = 1; i <= this.numbers.length; i++)
+		for (let i = 1; i <= this.numbers.length; i++)
 		{
 			this.searchMaxSumInPiecesOfSpecifiedSize(i);
 		}
@@ -26,9 +32,9 @@ export class MaxSumContractSolver
 
 	searchMaxSumInPiecesOfSpecifiedSize(sizeOfPiece: number)
 	{
-		for (var i = 0; i < this.numbers.length - sizeOfPiece + 1; i++)
+		for (let i = 0; i < this.numbers.length - sizeOfPiece + 1; i++)
 		{
-			var sum = this.sumInNumbersSegment(
+			let sum = this.sumInNumbersSegment(
 				this.numbers.slice(
 					i,
 					i + sizeOfPiece));
@@ -42,15 +48,20 @@ export class MaxSumContractSolver
 
 	sumInNumbersSegment(numbersSegment: number[])
 	{
-		var sum = 0;
+		let sum = 0;
 
-		for (var i = 0; i < numbersSegment.length; i++)
+		for (let i = 0; i < numbersSegment.length; i++)
 		{
-			var number = numbersSegment[i];
+			let number = numbersSegment[i];
 
 			sum += number;
 		}
 
 		return sum;
 	}
+
+	buildResult()
+	{
+		return this.maxSum.toString();
+    }
 }
