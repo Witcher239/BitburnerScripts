@@ -1,5 +1,7 @@
 import { NS } from '@ns';
 
+import { executeOnRemoteServer } from "scripts/util/util";
+
 import { RouteFinderService } from "scripts/services/RouteFinderService";
 
 export async function main(ns: NS)
@@ -36,19 +38,30 @@ export class BackdoorInstallerService
 	{
 		this.init();
 
-		this.findRouteToTarget();
+		if (!this.installingBackdoor())
+		{
+			this.findRouteToTarget();
 
-		await this.connectToTarget();
+			await this.connectToTarget();
 
-		await this.installBackdoorToTarget();
+			await this.installBackdoorToTarget();
 
-		await this.connectToCaller();
+			await this.connectToCaller();
+        }
 	}
 
 	init()
 	{
-		this.callerServerName = this.ns.getHostname();
+		this.callerServerName = this.ns.singularity.getCurrentServer();
 	}
+
+	installingBackdoor()
+	{
+		return this.ns.isRunning(
+			'/scripts/export/installBackdoor.js',
+			'home',
+			this.targetServerName);
+    }
 
 	findRouteToTarget()
 	{
@@ -94,7 +107,19 @@ export class BackdoorInstallerService
 
 	async installBackdoorToTarget()
 	{
-		await this.ns.singularity.installBackdoor();
+		if (this.ns.getScriptRam(
+				'/scripts/export/installBackdoor.js',
+				'home') <= this.ns.getServerMaxRam('home') - this.ns.getServerUsedRam('home'))
+		{
+			await executeOnRemoteServer(
+				this.ns,
+				'/scripts/export/installBackdoor.js',
+				'home',
+				1,
+				[this.targetServerName]);
+
+			await this.ns.sleep(1000);
+		}
 	}
 
 	async connectToCaller()

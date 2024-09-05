@@ -43,6 +43,9 @@ export class AccessManager extends Manager
 		this.ns.disableLog('getServerNumPortsRequired');
 		this.ns.disableLog('fileExists');
 		this.ns.disableLog('scan');
+		this.ns.disableLog('getServerMaxRam');
+		this.ns.disableLog('getServerUsedRam');
+		this.ns.disableLog('scp');
 	}
 
 	init()
@@ -294,7 +297,7 @@ export class AccessManager extends Manager
 
 			await backdoorInstallerService.startOperation();
 
-			ret = true;
+			ret = this.ns.getServer(serverName).backdoorInstalled!;
 		}
 
 		return ret;
@@ -303,8 +306,8 @@ export class AccessManager extends Manager
 	shouldStopOperation()
 	{
 		return this.rootAccessTargetServerNames.length == 0
-				&& this.backdoorTargetServerNames.length == 0
-				&& this.torRouter;
+			&& this.backdoorTargetServerNames.length == 0
+			&& this.torRouter;
 	}
 
 	setFlags()
