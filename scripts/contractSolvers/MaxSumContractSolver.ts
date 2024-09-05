@@ -62,6 +62,6 @@ export class MaxSumContractSolver extends ContractSolver
 
 	buildResult()
 	{
-		return this.maxSum.toString();
+		return this.maxSum;
     }
 }

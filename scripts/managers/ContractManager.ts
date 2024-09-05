@@ -12,6 +12,8 @@ import { LZDecompressionContractSolver } from "scripts/contractSolvers/LZDecompr
 import { LZCompressionContractSolver } from "scripts/contractSolvers/LZCompressionContractSolver";
 import { IPAddressesContractSolver } from "scripts/contractSolvers/IPAddressesContractSolver";
 import { ArrayJumpingContractSolver } from "scripts/contractSolvers/ArrayJumpingContractSolver";
+import { TotalWaysToSumPartitionContractSolver } from "scripts/contractSolvers/TotalWaysToSumPartitionContractSolver";
+import { TotalWaysToSumEnumerationContractSolver } from "scripts/contractSolvers/TotalWaysToSumEnumerationContractSolver";
 
 import { getAllServerNames } from "scripts/util/util";
 
@@ -94,6 +96,15 @@ export class ContractManager extends Manager
 
 		if (contractSolver)
 		{
+			this.ns.print(
+				'Solving contract "'
+				+ contractName
+				+ '" of a type "'
+				+ contractType
+				+ '" on the server "'
+				+ serverName
+				+ '"');
+
 			let result = await contractSolver.solve();
 
 			this.ns.print(
@@ -255,6 +266,28 @@ export class ContractManager extends Manager
 					this.ns,
 					jumpLengths,
 					true);
+
+				break;
+
+			case 'Total Ways to Sum':
+
+				var inputNumber = contractData;
+
+				contractSolver = new TotalWaysToSumPartitionContractSolver(
+					this.ns,
+					inputNumber);
+
+				break;
+
+			case 'Total Ways to Sum II':
+
+				var inputNumber = contractData[0];
+				var allowedNumbers = contractData[1];
+
+				contractSolver = new TotalWaysToSumEnumerationContractSolver(
+					this.ns,
+					inputNumber,
+					allowedNumbers);
 
 				break;
 		}

@@ -126,6 +126,6 @@ export class StockPriceContractSolver extends ContractSolver
 
 	buildResult()
 	{
-		return this.maxProfit.toString();
+		return this.maxProfit;
     }
 }

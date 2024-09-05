@@ -21,7 +21,7 @@ export class ContractSolver
 
 	}
 
-	buildResult()
+	buildResult(): any
 	{
 		return "";
 	}

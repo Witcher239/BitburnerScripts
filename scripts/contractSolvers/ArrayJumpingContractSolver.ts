@@ -59,10 +59,10 @@ export class ArrayJumpingContractSolver extends ContractSolver
 
 	buildResult()
 	{
-		return (this.returnMinJumpsRequired ?
+		return this.returnMinJumpsRequired ?
 			this.minJumpsRequired :
 			Math.min(
 				this.minJumpsRequired,
-				1)).toString();
+				1);
 	}
 }

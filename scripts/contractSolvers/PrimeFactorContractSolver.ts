@@ -53,6 +53,6 @@ export class PrimeFactorContractSolver extends ContractSolver
 			}
 		}
 
-		return largestPrimeFactor.toString();
+		return largestPrimeFactor;
     }
 }
